@@ -34,6 +34,8 @@ func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *
 
 		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
 
+		r.Get("/weekly", handlers.NewWeeklyHandler().ServeHTTP)
+
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 
 		r.Post("/register", handlers.NewPostRegisterHandler(handlers.PostRegisterHandlerParams{

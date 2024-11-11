@@ -1,0 +1,111 @@
+
+package templates
+import (
+	"fmt"
+    "time"
+)
+
+
+templ Weekly() {
+	<p>weekly things test </p>
+    <div class="calendar">
+    <div class="timeline">
+        <div class="spacer"></div>
+        <div class="time-marker">8:00</div>
+        <div class="time-marker">9:00</div>
+        <div class="time-marker">10:00</div>
+        <div class="time-marker">11:00</div>
+        <div class="time-marker">12:00</div>
+        <div class="time-marker">13:00</div>
+        <div class="time-marker">14:00</div>
+        <div class="time-marker">15:00</div>
+        <div class="time-marker">16:00</div>
+        <div class="time-marker">17:00</div>
+        <div class="time-marker">18:00</div>
+    </div>
+    <div class="days">
+        // for days 
+        for day, dayEvents := range replace_after(){
+            <div class={"day",day }>
+                <div class="date">
+                    <p class="date-day"> {day } </p>
+                </div>
+                <div class="events">
+                    for _,event := range dayEvents {
+                        <div class={"event", event.EndstartEvent,"securities"}>
+                            <p class="title">{event.Title}</p>
+                            <p class="time"> { event.TimeRange}</p> // need to make font smolar move up etc
+                            // add other data 
+                            // make it clicable 
+                        </div>
+    
+                    }
+                </div>
+            </div>
+        }   
+    </div>
+    </div>
+}
+// Event struct to hold event data
+type Event struct {
+	Title     string
+	Start     time.Time
+	End       time.Time
+	TimeRange string
+	DayOfWeek string // Day of the week (e.g., Monday, Tuesday)
+    EndstartEvent string
+}
+
+// Function to format time in "HH:MM - HH:MM" 24-hour format
+func formatTimeRange(start, end time.Time) string {
+	startTime := start.Format("15:04")
+	endTime := end.Format("15:04")
+	return fmt.Sprintf("%s-%s", startTime, endTime) // start-2 end-5
+}
+
+func formatEndStart(start, end time.Time) string {
+	startTime := start.Format("15")
+	endTime := end.Format("15")
+	return fmt.Sprintf("start-%s end-%s", startTime, endTime)
+}
+
+// Helper function to parse time from string
+func parseTime(timeStr string) time.Time {
+	layout := "2006-01-02 15:04:05"
+	parsedTime, _ := time.Parse(layout, timeStr)
+	return parsedTime
+}
+
+// Function to group events by their day of the week
+func groupEventsByDay(events []Event) map[string][]Event {
+	eventsByDay := make(map[string][]Event)
+
+	// Loop through events to populate TimeRange and DayOfWeek fields
+	for _, event := range events {
+		
+        event.EndstartEvent = formatEndStart(event.Start, event.End)
+        event.TimeRange = formatTimeRange(event.Start, event.End)
+		event.DayOfWeek = event.Start.Format("Monday") // Get the full name of the day
+		eventsByDay[event.DayOfWeek] = append(eventsByDay[event.DayOfWeek], event)
+	}
+
+	return eventsByDay
+}
+
+// Function to generate a structured list of events grouped by day
+func replace_after() map[string][]Event {
+	events := []Event{
+		{Title: "Event 1", Start: parseTime("2024-10-21 08:00:00"), End: parseTime("2024-10-21 11:00:00")},
+		{Title: "Event 2", Start: parseTime("2024-10-21 11:00:00"), End: parseTime("2024-10-21 13:00:00")},
+		{Title: "Event 3", Start: parseTime("2024-10-22 10:00:00"), End: parseTime("2024-10-22 12:00:00")},
+		{Title: "Event 4", Start: parseTime("2024-10-23 14:00:00"), End: parseTime("2024-10-23 16:00:00")},
+		{Title: "Event 5", Start: parseTime("2024-10-21 14:00:00"), End: parseTime("2024-10-21 16:00:00")},
+		{Title: "Event 6", Start: parseTime("2024-10-22 12:00:00"), End: parseTime("2024-10-22 15:00:00")},
+		{Title: "Event 7", Start: parseTime("2024-10-24 08:00:00"), End: parseTime("2024-10-24 11:00:00")},
+		{Title: "Event 8", Start: parseTime("2024-10-25 11:00:00"), End: parseTime("2024-10-25 13:00:00")},
+		{Title: "Event 9", Start: parseTime("2024-10-25 14:00:00"), End: parseTime("2024-10-25 16:00:00")},
+	}
+
+	// Group events by their day of the week
+	return groupEventsByDay(events)
+}

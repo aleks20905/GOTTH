@@ -17,6 +17,11 @@ templ header(title string) {
 		} else {
 			<link rel="stylesheet" href="static/css/style.css" nonce={ middleware.GetTwNonce(ctx) }/>
 		}
+		if os.Getenv("env") == "production" {
+			<link rel="stylesheet" href="static/css/weekly.css" nonce={ middleware.GetTwNonce(ctx) }/>// TODO add a min version
+		} else {
+			<link rel="stylesheet" href="static/css/weekly.css" nonce={ middleware.GetTwNonce(ctx) }/>
+		}
 	</head>
 }
 
