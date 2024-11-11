@@ -2,3 +2,4 @@ bin
 tmp
 *.db
 tailwindcss
+tailwindcss.exe
