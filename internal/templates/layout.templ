@@ -39,6 +39,9 @@ templ nav() {
 				<li>
 					<a class="text-gray-200" href="/about">About</a>
 				</li>
+				<li>
+					<a class="text-gray-200" href="/weekly">Weekly</a>
+				</li>	
 			</ol>
 			<ol class="flex space-x-4">
 				if middleware.GetUser(ctx) != nil {
@@ -52,6 +55,7 @@ templ nav() {
 					<li>
 						<a class="text-gray-200" href="/login">Login</a>
 					</li>
+					
 				}
 			</ol>
 		</div>

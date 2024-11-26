@@ -766,32 +766,8 @@ select {
   position: relative;
 }
 
-.end-1 {
-  inset-inline-end: 0.25rem;
-}
-
-.end-12 {
-  inset-inline-end: 3rem;
-}
-
-.end-4 {
-  inset-inline-end: 1rem;
-}
-
 .end-5 {
   inset-inline-end: 1.25rem;
-}
-
-.start-1 {
-  inset-inline-start: 0.25rem;
-}
-
-.start-10 {
-  inset-inline-start: 2.5rem;
-}
-
-.start-12 {
-  inset-inline-start: 3rem;
 }
 
 .start-2 {
