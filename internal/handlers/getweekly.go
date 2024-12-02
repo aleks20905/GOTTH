@@ -1,14 +1,23 @@
 package handlers
 
 import (
+	"goth/internal/store"
 	"goth/internal/templates"
 	"net/http"
 )
 
-type weeklyHandLer struct{}
+type weeklyHandLer struct {
+	scheduleStore store.ScheduleStore
+}
 
-func NewWeeklyHandler() *weeklyHandLer {
-	return &weeklyHandLer{}
+type getWeeklyHandlerParams struct {
+	ScheduleStore store.ScheduleStore
+}
+
+func NewWeeklyHandler(params getWeeklyHandlerParams) *weeklyHandLer {
+	return &weeklyHandLer{
+		scheduleStore: params.ScheduleStore,
+	}
 }
 
 func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
