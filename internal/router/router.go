@@ -12,7 +12,7 @@ import (
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 )
 
-func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *dbstore.SessionStore, passwordHasher *passwordhash.PasswordHash) *chi.Mux {
+func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *dbstore.SessionStore, passwordHasher *passwordhash.PasswordHash, scheduleStore *dbstore.ScheduleStore) *chi.Mux {
 	r := chi.NewRouter()
 
 	fileServer := http.FileServer(http.Dir("./static"))
@@ -34,7 +34,9 @@ func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *
 
 		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
 
-		r.Get("/weekly", handlers.NewWeeklyHandler().ServeHTTP)
+		r.Get("/weekly", handlers.NewWeeklyHandler(handlers.GetWeeklyHandlerParams{
+			ScheduleStore: scheduleStore,
+		}).ServeHTTP)
 
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 

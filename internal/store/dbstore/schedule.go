@@ -14,7 +14,7 @@ type NewScheduleStoreParams struct {
 	DB *gorm.DB
 }
 
-func NewScheduleStore(params NewUserStoreParams) *ScheduleStore {
+func NewScheduleStore(params NewScheduleStoreParams) *ScheduleStore {
 	return &ScheduleStore{
 		db: params.DB,
 	}

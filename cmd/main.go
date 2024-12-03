@@ -47,9 +47,13 @@ func main() {
 			DB: db,
 		},
 	)
-
+	scheduleStore := dbstore.NewScheduleStore(
+		dbstore.NewScheduleStoreParams{
+			DB: db,
+		},
+	)
 	//  router.go
-	r := router.SetupRouter(*cfg, userStore, sessionStore, passwordHasher)
+	r := router.SetupRouter(*cfg, userStore, sessionStore, passwordHasher, scheduleStore)
 
 	killSig := make(chan os.Signal, 1)
 	signal.Notify(killSig, os.Interrupt, syscall.SIGTERM)
