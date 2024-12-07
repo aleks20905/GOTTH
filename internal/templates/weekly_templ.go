@@ -11,10 +11,11 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
+	"goth/internal/store"
 	"time"
 )
 
-func Weekly(idk string) templ.Component {
+func Weekly(schedules []store.DayScheduels) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -35,26 +36,13 @@ func Weekly(idk string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>weekly things test ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>weekly things test </p><div class=\"calendar\"><div class=\"timeline\"><div class=\"spacer\"></div><div class=\"time-marker\">8:00</div><div class=\"time-marker\">9:00</div><div class=\"time-marker\">10:00</div><div class=\"time-marker\">11:00</div><div class=\"time-marker\">12:00</div><div class=\"time-marker\">13:00</div><div class=\"time-marker\">14:00</div><div class=\"time-marker\">15:00</div><div class=\"time-marker\">16:00</div><div class=\"time-marker\">17:00</div><div class=\"time-marker\">18:00</div><div class=\"time-marker\">19:00</div></div><div class=\"days\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(idk)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 10, Col: 27}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><div class=\"calendar\"><div class=\"timeline\"><div class=\"spacer\"></div><div class=\"time-marker\">8:00</div><div class=\"time-marker\">9:00</div><div class=\"time-marker\">10:00</div><div class=\"time-marker\">11:00</div><div class=\"time-marker\">12:00</div><div class=\"time-marker\">13:00</div><div class=\"time-marker\">14:00</div><div class=\"time-marker\">15:00</div><div class=\"time-marker\">16:00</div><div class=\"time-marker\">17:00</div><div class=\"time-marker\">18:00</div></div><div class=\"days\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		for day, dayEvents := range replace_after() {
-			var templ_7745c5c3_Var3 = []any{"day", day}
-			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
+		for _, schedules := range schedules {
+			var templ_7745c5c3_Var2 = []any{"day", schedules.Day}
+			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -62,12 +50,12 @@ func Weekly(idk string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var3).String())
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 1, Col: 0}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -75,12 +63,12 @@ func Weekly(idk string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(day)
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(schedules.Day)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 31, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 36, Col: 52}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -88,9 +76,9 @@ func Weekly(idk string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, event := range dayEvents {
-				var templ_7745c5c3_Var6 = []any{"event", event.EndstartEvent, "securities"}
-				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var6...)
+			for _, schedule := range schedules.Shedule {
+				var templ_7745c5c3_Var5 = []any{"event", formatEndStart(schedule.Start, schedule.End), "securities"}
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -98,12 +86,12 @@ func Weekly(idk string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var6).String())
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var5).String())
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 1, Col: 0}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -111,12 +99,12 @@ func Weekly(idk string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var8 string
-				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(event.Title)
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(schedule.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 36, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 42, Col: 53}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -124,12 +112,12 @@ func Weekly(idk string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(event.TimeRange)
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(schedule.Start.Format("15:04"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 37, Col: 62}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 43, Col: 69}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -151,68 +139,26 @@ func Weekly(idk string) templ.Component {
 	})
 }
 
-// Event struct to hold event data
-type Event struct {
-	Title         string
-	Start         time.Time
-	End           time.Time
-	TimeRange     string
-	DayOfWeek     string // Day of the week (e.g., Monday, Tuesday)
-	EndstartEvent string
-}
-
-// Function to format time in "HH:MM - HH:MM" 24-hour format
-func formatTimeRange(start, end time.Time) string {
-	startTime := start.Format("15:04")
-	endTime := end.Format("15:04")
-	return fmt.Sprintf("%s-%s", startTime, endTime) // start-2 end-5
-}
-
 func formatEndStart(start, end time.Time) string {
 	startTime := start.Format("15")
 	endTime := end.Format("15")
 	return fmt.Sprintf("start-%s end-%s", startTime, endTime)
 }
 
-// Helper function to parse time from string
-func parseTime(timeStr string) time.Time {
-	layout := "2006-01-02 15:04:05"
-	parsedTime, _ := time.Parse(layout, timeStr)
-	return parsedTime
-}
+func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule {
+	scheduleByDays := make(map[time.Weekday][]store.Schedule)
 
-// Function to group events by their day of the week
-func groupEventsByDay(events []Event) map[string][]Event {
-	eventsByDay := make(map[string][]Event)
-
-	// Loop through events to populate TimeRange and DayOfWeek fields
-	for _, event := range events {
-
-		event.EndstartEvent = formatEndStart(event.Start, event.End)
-		event.TimeRange = formatTimeRange(event.Start, event.End)
-		event.DayOfWeek = event.Start.Format("Monday") // Get the full name of the day
-		eventsByDay[event.DayOfWeek] = append(eventsByDay[event.DayOfWeek], event)
+	for _, schedule := range schedules {
+		weekday := schedule.Start.Weekday()
+		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
+		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
 	}
 
-	return eventsByDay
-}
+	// for day, days := range scheduleByDays{
 
-// Function to generate a structured list of events grouped by day
-func replace_after() map[string][]Event {
-	events := []Event{
-		{Title: "Event 1", Start: parseTime("2024-10-21 08:00:00"), End: parseTime("2024-10-21 11:00:00")},
-		{Title: "Event 2", Start: parseTime("2024-10-21 11:00:00"), End: parseTime("2024-10-21 13:00:00")},
-		{Title: "Event 3", Start: parseTime("2024-10-22 10:00:00"), End: parseTime("2024-10-22 12:00:00")},
-		{Title: "Event 4", Start: parseTime("2024-10-23 14:00:00"), End: parseTime("2024-10-23 16:00:00")},
-		{Title: "Event 5", Start: parseTime("2024-10-21 14:00:00"), End: parseTime("2024-10-21 16:00:00")},
-		{Title: "Event 6", Start: parseTime("2024-10-22 12:00:00"), End: parseTime("2024-10-22 15:00:00")},
-		{Title: "Event 7", Start: parseTime("2024-10-24 08:00:00"), End: parseTime("2024-10-24 11:00:00")},
-		{Title: "Event 8", Start: parseTime("2024-10-25 11:00:00"), End: parseTime("2024-10-25 13:00:00")},
-		{Title: "Event 9", Start: parseTime("2024-10-25 14:00:00"), End: parseTime("2024-10-25 16:00:00")},
-	}
-
-	// Group events by their day of the week
-	return groupEventsByDay(events)
+	//     fmt.Println(day," : ",days)
+	// }
+	return scheduleByDays
 }
 
 var _ = templruntime.GeneratedTemplate

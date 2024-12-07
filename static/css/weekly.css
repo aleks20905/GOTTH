@@ -1,6 +1,6 @@
 :root {
   --numDays: 5;
-  --numHours: 11;
+  --numHours: 12;
   --timeHeight: 60px;
   --calBgColor: #fff1f8;
   --eventBorderColor: #f2d3d8;
@@ -39,28 +39,39 @@
 .start-08 {
   grid-row-start: 1;
 }
-
 .start-09 {
   grid-row-start: 2;
 }
-
 .start-10 {
   grid-row-start: 3;
 }
 .start-11 {
   grid-row-start: 4;
 }
-
 .start-12 {
   grid-row-start: 5;
 }
-
 .start-13 {
   grid-row-start: 6;
 }
-
 .start-14 {
   grid-row-start: 7;
+}
+.start-15 {
+  grid-row-start: 8;
+}
+.start-16 {
+  grid-row-start: 9;
+}
+.start-17 {
+  grid-row-start: 10;
+}
+
+.end-09 {
+  grid-row-end: 2;
+}
+.end-10 {
+  grid-row-end: 3;
 }
 .end-11 {
   grid-row-end: 4;
@@ -68,25 +79,26 @@
 .end-12 {
   grid-row-end: 5;
 }
-
 .end-13 {
   grid-row-end: 6;
 }
-
 .end-14 {
   grid-row-end: 7;
 }
-
 .end-15 {
   grid-row-end: 8;
 }
-
 .end-16 {
   grid-row-end: 9;
 }
-
 .end-17 {
   grid-row-end: 10;
+}
+.end-18 {
+  grid-row-end: 11;
+}
+.end-19 {
+  grid-row-end: 12;
 }
 
 .title {

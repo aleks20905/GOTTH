@@ -23,7 +23,7 @@ func NewScheduleStore(params NewScheduleStoreParams) *ScheduleStore {
 func (s *ScheduleStore) GetSchedule(course uint, spec string, group_name string) (*[]store.Schedule, error) {
 
 	var shedule []store.Schedule
-	err := s.db.Where("course = ? AND spec = ? AND group_name = ?", course, spec, group_name).Find(&shedule).Error
+	err := s.db.Where("course = ? AND spec = ? AND group_name = ?", course, spec, group_name).Order("start ").Find(&shedule).Error
 
 	if err != nil {
 		return nil, err

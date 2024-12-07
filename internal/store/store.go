@@ -28,6 +28,10 @@ type Schedule struct {
 	GroupS    string    `json:"groups"`
 	Des       string    `json:"des"`
 }
+type DayScheduels struct {
+	Day     string
+	Shedule []Schedule
+}
 type UserStore interface {
 	CreateUser(email string, password string) error
 	GetUser(email string) (*User, error)
