@@ -16,7 +16,7 @@ type NewScheduleStoreParams struct {
 }
 
 type valiedRequest struct {
-	Course    uint   `validate:"required,min=1,max=50"`
+	Course    uint   `validate:"required,min=1,max=5"`
 	Spec      string `validate:"required,min=1,max=50"`
 	GroupName string `validate:"required,min=1,max=50"`
 }
@@ -25,6 +25,39 @@ func NewScheduleStore(params NewScheduleStoreParams) *ScheduleStore {
 	return &ScheduleStore{
 		db: params.DB,
 	}
+}
+
+func (s *ScheduleStore) GetGroupName() (*[]store.Schedule, error) {
+	var shedule []store.Schedule
+
+	err := s.db.Distinct("group_name").Order("group_name").Find(&shedule).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return &shedule, err
+}
+
+func (s *ScheduleStore) GetSpec() (*[]store.Schedule, error) {
+	var shedule []store.Schedule
+
+	err := s.db.Distinct("spec").Order("spec").Find(&shedule).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return &shedule, err
+}
+
+func (s *ScheduleStore) GetCourses() (*[]store.Schedule, error) {
+	var shedule []store.Schedule
+
+	err := s.db.Distinct("course").Find(&shedule).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return &shedule, err
 }
 
 func (s *ScheduleStore) GetSchedule(course uint, spec string, group_name string) (*[]store.Schedule, error) {

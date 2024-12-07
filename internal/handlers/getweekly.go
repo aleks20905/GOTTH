@@ -36,10 +36,27 @@ func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error loading schedule", http.StatusInternalServerError)
 		return
 	}
-
 	daySchedules := scheduleToDays(*schedule)
 
-	c := templates.Weekly(daySchedules)
+	courses, err := h.scheduleStore.GetCourses()
+	if err != nil {
+		http.Error(w, "Error loading course", http.StatusInternalServerError)
+		return
+	}
+
+	specs, err := h.scheduleStore.GetSpec()
+	if err != nil {
+		http.Error(w, "Error loading Specs", http.StatusInternalServerError)
+		return
+	}
+
+	groupNames, err := h.scheduleStore.GetGroupName()
+	if err != nil {
+		http.Error(w, "Error loading GroupNames", http.StatusInternalServerError)
+		return
+	}
+
+	c := templates.Weekly(*courses, *specs, *groupNames, daySchedules)
 	err = templates.Layout(c, "My website").Render(r.Context(), w)
 
 	if err != nil {

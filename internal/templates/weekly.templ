@@ -6,8 +6,30 @@ import (
 	"goth/internal/store"
 )
 
-templ Weekly(schedules []store.DayScheduels) {
+templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DayScheduels) {
 	<p>weekly things test </p>
+    <label>course:</label>
+        <select name=" course" id="course">
+            for _, course := range course {
+                <option value={ fmt.Sprintf("%d",course.Course) }>{ fmt.Sprintf("%d",course.Course) }</option> 
+            }
+        </select>
+
+    <label>Spec:</label>
+        <select name="spec" id="spec">
+            for _, spec := range specs {
+                <option value={ spec.Spec }> { spec.Spec }</option> 
+            } 
+        </select>
+    <label>groupName:</label>
+        <select name="group_name" id="group_name">
+            for _, groupName := range groupNames {
+                <option value={ fmt.Sprintf("%d", groupName.GroupName) }>{ fmt.Sprintf("%d", groupName.GroupName) }</option> 
+            }  
+        </select>
+
+
+
     <div class="calendar">
     <div class="timeline">
         <div class="spacer"></div>
@@ -71,4 +93,5 @@ func formatEndStart(start, end time.Time) string {
 //     // }
 //     return scheduleByDays
 // }
+
 
