@@ -17,8 +17,8 @@ type NewScheduleStoreParams struct {
 
 type valiedRequest struct {
 	Course    uint   `validate:"required,min=1,max=50"`
-	Spec      string `validate:"required,max=50"`
-	GroupName string `validate:"required,max=50"`
+	Spec      string `validate:"required,min=1,max=50"`
+	GroupName string `validate:"required,min=1,max=50"`
 }
 
 func NewScheduleStore(params NewScheduleStoreParams) *ScheduleStore {

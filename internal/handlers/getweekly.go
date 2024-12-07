@@ -22,23 +22,16 @@ func NewWeeklyHandler(params GetWeeklyHandlerParams) *weeklyHandLer {
 }
 
 func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	courseStr := r.URL.Query().Get("course")
-	if courseStr == "" {
-		http.Error(w, "Missing 'course' query parameter"+courseStr, http.StatusBadRequest)
-		return
-	}
-
-	course, err := strconv.ParseUint(courseStr, 10, 64)
+	course, err := convertCourse(r.URL.Query().Get("course"))
 	if err != nil {
-		http.Error(w, "Error url query problem"+courseStr, http.StatusInternalServerError)
+		http.Error(w, "Error course parse problem", http.StatusInternalServerError)
 		return
 	}
-	uintCourse := uint(course)
 
 	spec := r.URL.Query().Get("spec")
 	groupName := r.URL.Query().Get("group_name")
 
-	schedule, err := h.scheduleStore.GetSchedule(uintCourse, spec, groupName)
+	schedule, err := h.scheduleStore.GetSchedule(course, spec, groupName)
 	if err != nil {
 		http.Error(w, "Error loading schedule", http.StatusInternalServerError)
 		return
@@ -56,9 +49,7 @@ func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func scheduleToDays(schedules []store.Schedule) []store.DayScheduels {
-	weekdaysInOrder := []string{
-		"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-	}
+	weekdaysInOrder := []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"}
 
 	weekSchedule := make([]store.DayScheduels, len(weekdaysInOrder))
 	for i, day := range weekdaysInOrder {
@@ -84,4 +75,17 @@ func scheduleToDays(schedules []store.Schedule) []store.DayScheduels {
 	// }
 
 	return weekSchedule
+}
+
+func convertCourse(courseStr string) (uint, error) {
+	if courseStr == "" {
+		return 0, nil
+	}
+
+	course, err := strconv.ParseUint(courseStr, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return uint(course), nil
 }

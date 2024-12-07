@@ -66,7 +66,7 @@ func Weekly(schedules []store.DayScheduels) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(schedules.Day)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 35, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 32, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -102,7 +102,7 @@ func Weekly(schedules []store.DayScheduels) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(schedule.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 41, Col: 53}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 38, Col: 53}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -115,7 +115,7 @@ func Weekly(schedules []store.DayScheduels) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(schedule.Start.Format("15:04"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 42, Col: 69}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/weekly.templ`, Line: 39, Col: 69}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -145,20 +145,19 @@ func formatEndStart(start, end time.Time) string {
 	return fmt.Sprintf("start-%s end-%s", startTime, endTime)
 }
 
-func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule {
-	scheduleByDays := make(map[time.Weekday][]store.Schedule)
+// func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule{
+//     scheduleByDays := make(map[time.Weekday][]store.Schedule)
 
-	for _, schedule := range schedules {
-		weekday := schedule.Start.Weekday()
-		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
-		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
-	}
+//     for _, schedule := range schedules {
+// 		weekday := schedule.Start.Weekday()
+// 		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
+// 		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
+// 	}
 
-	// for day, days := range scheduleByDays{
+//     // for day, days := range scheduleByDays{
 
-	//     fmt.Println(day," : ",days)
-	// }
-	return scheduleByDays
-}
-
+//	    //     fmt.Println(day," : ",days)
+//	    // }
+//	    return scheduleByDays
+//	}
 var _ = templruntime.GeneratedTemplate

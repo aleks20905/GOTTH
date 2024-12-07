@@ -6,8 +6,6 @@ import (
 	"goth/internal/store"
 )
 
-
-
 templ Weekly(schedules []store.DayScheduels) {
 	<p>weekly things test </p>
     <div class="calendar">
@@ -30,7 +28,6 @@ templ Weekly(schedules []store.DayScheduels) {
         for _, schedules := range schedules{
 
             <div class={"day", schedules.Day }>
-
             <div class="date">
                 <p class="date-day"> { schedules.Day } </p>
             </div>
@@ -59,19 +56,19 @@ func formatEndStart(start, end time.Time) string {
 	return fmt.Sprintf("start-%s end-%s", startTime, endTime)
 }
 
-func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule{
-    scheduleByDays := make(map[time.Weekday][]store.Schedule)
+// func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule{
+//     scheduleByDays := make(map[time.Weekday][]store.Schedule)
 
-    for _, schedule := range schedules {
-		weekday := schedule.Start.Weekday()
-		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
-		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
-	}
+//     for _, schedule := range schedules {
+// 		weekday := schedule.Start.Weekday()
+// 		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
+// 		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
+// 	}
 
-    // for day, days := range scheduleByDays{
+//     // for day, days := range scheduleByDays{
 
-    //     fmt.Println(day," : ",days)
-    // }
-    return scheduleByDays
-}
+//     //     fmt.Println(day," : ",days)
+//     // }
+//     return scheduleByDays
+// }
 
