@@ -31,7 +31,7 @@ func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	spec := r.URL.Query().Get("spec")
 	groupName := r.URL.Query().Get("group_name")
 
-	schedule, err := h.scheduleStore.GetSchedule(course, spec, groupName)
+	schedule, err := h.scheduleStore.GetSchedules(course, spec, groupName)
 	if err != nil {
 		http.Error(w, "Error loading schedule", http.StatusInternalServerError)
 		return
@@ -44,13 +44,13 @@ func (h *weeklyHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	specs, err := h.scheduleStore.GetSpec()
+	specs, err := h.scheduleStore.GetSpecs()
 	if err != nil {
 		http.Error(w, "Error loading Specs", http.StatusInternalServerError)
 		return
 	}
 
-	groupNames, err := h.scheduleStore.GetGroupName()
+	groupNames, err := h.scheduleStore.GetGroupNames()
 	if err != nil {
 		http.Error(w, "Error loading GroupNames", http.StatusInternalServerError)
 		return

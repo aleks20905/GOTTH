@@ -27,7 +27,7 @@ func NewScheduleStore(params NewScheduleStoreParams) *ScheduleStore {
 	}
 }
 
-func (s *ScheduleStore) GetGroupName() (*[]store.Schedule, error) {
+func (s *ScheduleStore) GetGroupNames() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("group_name").Order("group_name").Find(&shedule).Error
@@ -38,7 +38,7 @@ func (s *ScheduleStore) GetGroupName() (*[]store.Schedule, error) {
 	return &shedule, err
 }
 
-func (s *ScheduleStore) GetSpec() (*[]store.Schedule, error) {
+func (s *ScheduleStore) GetSpecs() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("spec").Order("spec").Find(&shedule).Error
@@ -60,7 +60,7 @@ func (s *ScheduleStore) GetCourses() (*[]store.Schedule, error) {
 	return &shedule, err
 }
 
-func (s *ScheduleStore) GetSchedule(course uint, spec string, group_name string) (*[]store.Schedule, error) {
+func (s *ScheduleStore) GetSchedules(course uint, spec string, group_name string) (*[]store.Schedule, error) {
 
 	validate := validator.New()
 	req := valiedRequest{

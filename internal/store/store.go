@@ -37,10 +37,10 @@ type UserStore interface {
 	GetUser(email string) (*User, error)
 }
 type ScheduleStore interface {
-	GetSchedule(course uint, spec string, group_name string) (*[]Schedule, error)
+	GetSchedules(course uint, spec string, group_name string) (*[]Schedule, error)
 	GetCourses() (*[]Schedule, error)
-	GetSpec() (*[]Schedule, error)
-	GetGroupName() (*[]Schedule, error)
+	GetSpecs() (*[]Schedule, error)
+	GetGroupNames() (*[]Schedule, error)
 }
 type SessionStore interface {
 	CreateSession(session *Session) (*Session, error)

@@ -8,27 +8,27 @@ import (
 
 templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DayScheduels) {
 	<p>weekly things test </p>
+
     <label>course:</label>
-        <select name=" course" id="course">
-            for _, course := range course {
-                <option value={ fmt.Sprintf("%d",course.Course) }>{ fmt.Sprintf("%d",course.Course) }</option> 
-            }
-        </select>
-
+    <select name=" course" id="course">
+        for _, course := range course {
+            <option value={ fmt.Sprintf("%d",course.Course) }>{ fmt.Sprintf("%d",course.Course) }</option> 
+        }
+    </select>
+    
     <label>Spec:</label>
-        <select name="spec" id="spec">
-            for _, spec := range specs {
-                <option value={ spec.Spec }> { spec.Spec }</option> 
-            } 
-        </select>
+    <select name="spec" id="spec">
+        for _, spec := range specs {
+            <option value={ spec.Spec }> { spec.Spec }</option> 
+        } 
+    </select>
     <label>groupName:</label>
-        <select name="group_name" id="group_name">
-            for _, groupName := range groupNames {
-                <option value={ fmt.Sprintf("%d", groupName.GroupName) }>{ fmt.Sprintf("%d", groupName.GroupName) }</option> 
-            }  
-        </select>
 
-
+    <select name="group_name" id="group_name">
+        for _, groupName := range groupNames {
+            <option value={ fmt.Sprintf("%d", groupName.GroupName) }>{ fmt.Sprintf("%d", groupName.GroupName) }</option> 
+        }  
+    </select>
 
     <div class="calendar">
     <div class="timeline">
@@ -46,13 +46,12 @@ templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DaySc
         <div class="time-marker">18:00</div>
         <div class="time-marker">19:00</div>
     </div>
+    
     <div class="days">
         for _, schedules := range schedules{
 
             <div class={"day", schedules.Day }>
-            <div class="date">
-                <p class="date-day"> { schedules.Day } </p>
-            </div>
+            <div class="date"> <p class="date-day"> { schedules.Day } </p> </div>
 
             <div class="events">
             for _, schedule := range schedules.Shedule {
