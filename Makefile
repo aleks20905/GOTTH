@@ -5,7 +5,7 @@ tailwind-watch:
 .PHONY: tailwind-build
 tailwind-build:
 	tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
-	
+
 .PHONY: templ-generate
 templ-generate:
 	templ generate
@@ -20,7 +20,6 @@ dev:
 
 .PHONY: build
 build:
-	make tailwind-build
 	make templ-generate
 	go build -ldflags "-X main.Environment=production" -o ./bin/$(APP_NAME) ./cmd/$(APP_NAME)/main.go
 
