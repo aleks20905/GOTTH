@@ -1,2 +1,22 @@
-[phases.setup]
-    nixPkgs = ['...', 'gcc', "sqlite"]
+[phases]
+install = '''
+go install github.com/a-h/templ/cmd/templ@latest && \
+curl -L https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.4/tailwindcss-linux-x64 -o /usr/local/bin/tailwindcss && \
+chmod +x /usr/local/bin/tailwindcss
+'''
+
+# 2. Build phase: Generate CSS with Tailwind, build templates, then build Go app
+build = '''
+make tailwind-build && \
+make templ-generate && \
+go build -ldflags "-X main.Environment=production" -o ./bin/$(APP_NAME) ./cmd/$(APP_NAME)/main.go
+'''
+
+# 3. Start phase: Define how to start the application
+start = "./bin/$(APP_NAME)"
+
+# (Optional) Setting the Go version explicitly
+[language.go]
+version = "1.22"
+
+
