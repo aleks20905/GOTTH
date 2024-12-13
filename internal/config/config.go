@@ -3,7 +3,7 @@ package config
 import "github.com/kelseyhightower/envconfig"
 
 type Config struct {
-	Port              string `envconfig:"PORT" default:":localhost:8080"`
+	Port              string `envconfig:"PORT" default:":4000"`
 	DatabaseName      string `envconfig:"DATABASE_NAME" default:"goth.db"`
 	SessionCookieName string `envconfig:"SESSION_COOKIE_NAME" default:"session"`
 	DatabaseUrl       string `envconfig:"DATABASE_URL"`

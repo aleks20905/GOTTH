@@ -26,7 +26,7 @@ COPY --from=builder /build/bin/userapi ./userapi
 
 COPY --from=builder /build/static ./static
 
-EXPOSE 8080
+EXPOSE 4000
 
 CMD ["/app/userapi"]
 
