@@ -14,7 +14,7 @@ import (
 func open(dbName, dbUrl string) (*gorm.DB, error) {
 
 	if os.Getenv("ENV") == "production" {
-		return gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+		return gorm.Open(postgres.Open(dbUrl), &gorm.Config{}) // TODO find a better place to handle common things
 
 	}
 
