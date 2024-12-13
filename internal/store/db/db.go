@@ -4,12 +4,19 @@ import (
 	"goth/internal/store"
 	"os"
 
-	// "gorm.io/driver/sqlite" // Sqlite driver based on CGO
-	"github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite" // Sqlite driver based on CGO
+
+	// "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
 	"gorm.io/gorm"
 )
 
-func open(dbName string) (*gorm.DB, error) {
+func open(dbName, dbUrl string) (*gorm.DB, error) {
+
+	if os.Getenv("ENV") == "production" {
+		return gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+
+	}
 
 	// make the temp directory if it doesn't exist
 	err := os.MkdirAll("/tmp", 0755)
@@ -20,13 +27,13 @@ func open(dbName string) (*gorm.DB, error) {
 	return gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 }
 
-func MustOpen(dbName string) *gorm.DB {
+func MustOpen(dbName, dbUrl string) *gorm.DB {
 
 	if dbName == "" {
 		dbName = "goth.db"
 	}
 
-	db, err := open(dbName)
+	db, err := open(dbName, dbUrl)
 	if err != nil {
 		panic(err)
 	}

@@ -6,6 +6,7 @@ type Config struct {
 	Port              string `envconfig:"PORT" default:":4000"`
 	DatabaseName      string `envconfig:"DATABASE_NAME" default:"goth.db"`
 	SessionCookieName string `envconfig:"SESSION_COOKIE_NAME" default:"session"`
+	DatabaseUrl       string `envconfig:"DATABASE_URL"`
 }
 
 func loadConfig() (*Config, error) {

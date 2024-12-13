@@ -21,10 +21,18 @@ import (
 * Set to production at build time
 * used to determine what assets to load
  */
-var Environment = "development"
+var Environment string
 
 func init() {
-	os.Setenv("env", Environment)
+	env := os.Getenv("ENV")
+	if env == "" {
+		Environment = "development"
+		os.Setenv("ENV", Environment)
+	} else {
+		Environment = env
+		os.Setenv("ENV", Environment)
+	}
+	// log.Printf("Running in %s environment", Environment)
 }
 
 func main() {
@@ -32,7 +40,7 @@ func main() {
 
 	cfg := config.MustLoadConfig()
 
-	db := database.MustOpen(cfg.DatabaseName)
+	db := database.MustOpen(cfg.DatabaseName, cfg.DatabaseUrl)
 	passwordHasher := passwordhash.NewHPasswordHash()
 
 	userStore := dbstore.NewUserStore(
