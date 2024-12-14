@@ -65,10 +65,9 @@ func main() {
 
 	killSig := make(chan os.Signal, 1)
 	signal.Notify(killSig, os.Interrupt, syscall.SIGTERM)
-	port := ":4000"
+
 	srv := &http.Server{
-		// Addr:    cfg.Port,
-		Addr:    port,
+		Addr:    cfg.Port,
 		Handler: r,
 	}
 
@@ -83,7 +82,7 @@ func main() {
 		}
 	}()
 
-	logger.Info("Server started", slog.String("port", port), slog.String("env", Environment))
+	logger.Info("Server started", slog.String("port", cfg.Port), slog.String("env", Environment))
 	<-killSig
 
 	logger.Info("Shutting down server")
