@@ -3,6 +3,7 @@ package main
 import (
 	"goth/internal/store"
 	"log"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -11,14 +12,18 @@ import (
 )
 
 func main() {
-	// 1. Connect to the SQLite database
+	// Connect to the SQLite database
 	sqliteDB, err := gorm.Open(sqlite.Open("goth.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to SQLite database:", err)
 	}
 
-	// 2. Connect to the PostgreSQL database
-	postgresDSN := "postgresql://postgres:XrhFPTfkZumrlGFpOjwXKSneLcBpopRw@junction.proxy.rlwy.net:17865/railway"
+	postgresDSN := os.Getenv("DATABASE_PUBLIC_URL")
+	if postgresDSN == "" {
+		log.Fatal("DATABASE_PUBLIC_URL environment variable is not set")
+	}
+
+	// Connect to the PostgreSQL database
 	postgresDB, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to PostgreSQL database:", err)
@@ -30,7 +35,7 @@ func main() {
 		log.Fatal("Failed to migrate PostgreSQL schema:", err)
 	}
 
-	// 3. Retrieve all records from the SQLite database
+	// Retrieve all records from the SQLite database
 	var schedules []store.Schedule
 	if err := sqliteDB.Find(&schedules).Error; err != nil {
 		log.Fatal("Failed to retrieve data from SQLite:", err)
@@ -48,5 +53,5 @@ func main() {
 		}
 		log.Println("Successfully migrated data to PostgreSQL with upserts!")
 	}
-	// 4. Insert the data into PostgreSQL, update on conflict
+	// Insert the data into PostgreSQL, update on conflict
 }
