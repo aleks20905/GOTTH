@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	// Connect to the SQLite database
 	sqliteDB, err := gorm.Open(sqlite.Open("goth.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to SQLite database:", err)
@@ -23,7 +22,6 @@ func main() {
 		log.Fatal("DATABASE_PUBLIC_URL environment variable is not set")
 	}
 
-	// Connect to the PostgreSQL database
 	postgresDB, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to PostgreSQL database:", err)
