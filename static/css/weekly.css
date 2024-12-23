@@ -11,94 +11,137 @@
 }
 
 .calendar {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: auto 1fr;
-  margin: 2rem;
+  margin: 0.5rem;
+  max-width: 100%;
+  overflow-x: auto;
+  font-family: system-ui, sans-serif;
+}
+
+@media (min-width: 768px) {
+  .calendar {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto 1fr;
+    margin: 2rem;
+  }
 }
 
 .timeline {
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .timeline {
+    display: grid;
+    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  }
 }
 
 .days {
-  display: grid;
-  grid-column: 2;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .days {
+    display: grid;
+    grid-column: 2;
+    gap: 5px;
+    grid-template-columns: repeat(var(--numDays), 1fr);
+  }
 }
 
 .events {
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  min-height: 200px;
   border-radius: 5px;
   background: var(--calBgColor);
+  padding: 0.5rem;
 }
 
-.start-08 {
-  grid-row-start: 1;
-}
-.start-09 {
-  grid-row-start: 2;
-}
-.start-10 {
-  grid-row-start: 3;
-}
-.start-11 {
-  grid-row-start: 4;
-}
-.start-12 {
-  grid-row-start: 5;
-}
-.start-13 {
-  grid-row-start: 6;
-}
-.start-14 {
-  grid-row-start: 7;
-}
-.start-15 {
-  grid-row-start: 8;
-}
-.start-16 {
-  grid-row-start: 9;
-}
-.start-17 {
-  grid-row-start: 10;
+@media (min-width: 768px) {
+  .events {
+    display: grid;
+    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+    padding: 0;
+  }
 }
 
-.end-09 {
-  grid-row-end: 2;
+.event {
+  border: 1px solid var(--eventBorderColor);
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  background: white;
 }
-.end-10 {
-  grid-row-end: 3;
+
+@media (min-width: 768px) {
+  .event {
+    margin: 0 0.5rem;
+    position: relative;
+  }
+
+  /* Start times */
+  .start-08 { grid-row-start: 1; }
+  .start-09 { grid-row-start: 2; }
+  .start-10 { grid-row-start: 3; }
+  .start-11 { grid-row-start: 4; }
+  .start-12 { grid-row-start: 5; }
+  .start-13 { grid-row-start: 6; }
+  .start-14 { grid-row-start: 7; }
+  .start-15 { grid-row-start: 8; }
+  .start-16 { grid-row-start: 9; }
+  .start-17 { grid-row-start: 10; }
+
+  /* End times */
+  .end-09 { grid-row-end: 2; }
+  .end-10 { grid-row-end: 3; }
+  .end-11 { grid-row-end: 4; }
+  .end-12 { grid-row-end: 5; }
+  .end-13 { grid-row-end: 6; }
+  .end-14 { grid-row-end: 7; }
+  .end-15 { grid-row-end: 8; }
+  .end-16 { grid-row-end: 9; }
+  .end-17 { grid-row-end: 10; }
+  .end-18 { grid-row-end: 11; }
+  .end-19 { grid-row-end: 12; }
 }
-.end-11 {
-  grid-row-end: 4;
+
+.space,
+.date {
+  height: 60px;
 }
-.end-12 {
-  grid-row-end: 5;
+
+.date {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-.end-13 {
-  grid-row-end: 6;
+
+.date-num {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
 }
-.end-14 {
-  grid-row-end: 7;
+
+.date-day {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0;
 }
-.end-15 {
-  grid-row-end: 8;
-}
-.end-16 {
-  grid-row-end: 9;
-}
-.end-17 {
-  grid-row-end: 10;
-}
-.end-18 {
-  grid-row-end: 11;
-}
-.end-19 {
-  grid-row-end: 12;
+
+@media (min-width: 768px) {
+  .date-num {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+  
+  .date-day {
+    font-size: 3rem;
+    font-weight: 100;
+  }
 }
 
 .title {
@@ -106,53 +149,8 @@
   margin-bottom: 0.25rem;
 }
 
-.event {
-  border: 1px solid var(--eventBorderColor);
-  border-radius: 5px;
-  padding: 0.5rem;
-  margin: 0 0.5rem;
-  background: white;
-}
-
-.space,
-.date {
-  height: 60px
-}
-
-
-body {
-  font-family: system-ui, sans-serif;
-}
-
-.corp-fi {
-  background: var(--eventColor1);
-}
-
-.ent-law {
-  background: var(--eventColor2);
-}
-
-.writing {
-  background: var(--eventColor3);
-}
-
-.securities {
-  background: var(--eventColor4);
-}
-
-.date {
-  display: flex;
-  gap: 1em;
-}
-
-.date-num {
-  font-size: 3rem;
-  font-weight: 600;
-  display: inline;
-}
-
-.date-day {
-  display: inline;
-  font-size: 3rem;
-  font-weight: 100;
-}
+/* Event Colors */
+.corp-fi { background: var(--eventColor1); }
+.ent-law { background: var(--eventColor2); }
+.writing { background: var(--eventColor3); }
+.securities { background: var(--eventColor4); }
