@@ -1,0 +1,38 @@
+package templates
+import (
+	"fmt"
+	"goth/internal/store"
+)
+
+templ WeeklyList(idk []store.Schedule) {
+	// <p>weekly-list things test </p>
+
+    for _, course := range idk {
+        <a class="text-primary-200" href={ templ.SafeURL(fmt.Sprintf("/weekly?course=%d&spec=%v&group_name=%v",course.Course, course.Spec, course.GroupName)) } > 
+            { fmt.Sprintf("course: %d spec: %v group: %v",course.Course, course.Spec, course.GroupName)} 
+        </a>
+        <br>
+    }
+
+
+}
+
+
+
+// func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule{
+//     scheduleByDays := make(map[time.Weekday][]store.Schedule)
+
+//     for _, schedule := range schedules {
+// 		weekday := schedule.Start.Weekday()
+// 		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
+// 		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
+// 	}
+
+//     // for day, days := range scheduleByDays{
+
+//     //     fmt.Println(day," : ",days)
+//     // }
+//     return scheduleByDays
+// }
+
+

@@ -6,29 +6,30 @@ import (
 	"goth/internal/store"
 )
 
-templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DayScheduels) {
-	<p>weekly things test </p>
+// templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DayScheduels) {
+templ Weekly( schedules []store.DayScheduels) {
+	// <p>weekly things test </p>
 
-    <label>course:</label>
-    <select name=" course" id="course">
-        for _, course := range course {
-            <option value={ fmt.Sprintf("%d",course.Course) }>{ fmt.Sprintf("%d",course.Course) }</option> 
-        }
-    </select>
+    // <label>course:</label>
+    // <select name=" course" id="course" onchange="updateUrl()">
+    //     for _, course := range course {
+    //         <option value={ fmt.Sprintf("%d",course.Course) }>{ fmt.Sprintf("%d",course.Course) }</option> 
+    //     }
+    // </select>
     
-    <label>Spec:</label>
-    <select name="spec" id="spec">
-        for _, spec := range specs {
-            <option value={ spec.Spec }> { spec.Spec }</option> 
-        } 
-    </select>
-    <label>groupName:</label>
+    // <label>Spec:</label>
+    // <select name="spec" id="spec"onchange="updateUrl()">
+    //     for _, spec := range specs {
+    //         <option value={ spec.Spec }> { spec.Spec }</option> 
+    //     } 
+    // </select>
+    // <label>groupName:</label>
 
-    <select name="group_name" id="group_name">
-        for _, groupName := range groupNames {
-            <option value={ fmt.Sprintf("%d", groupName.GroupName) }>{ fmt.Sprintf("%d", groupName.GroupName) }</option> 
-        }  
-    </select>
+    // <select name="group_name" id="group_name"onchange="updateUrl()">
+    //     for _, groupName := range groupNames {
+    //         <option value={ fmt.Sprintf("%d", groupName.GroupName) }>{ fmt.Sprintf("%d", groupName.GroupName) }</option> 
+    //     }  
+    // </select>
 
     <div class="calendar">
     <div class="timeline">
@@ -57,7 +58,7 @@ templ Weekly(course, specs, groupNames []store.Schedule, schedules []store.DaySc
             for _, schedule := range schedules.Shedule {
                 <div class={"event", formatEndStart(schedule.Start, schedule.End),"securities"}>
                     <p class="title">{ schedule.Title }</p>
-                    <p class="time"> { schedule.Start.Format("15:04") }</p> // need to make font smolar move up etc
+                    <p class="time"> { schedule.Start.Format("15:04") } { schedule.End.Format("15:04") }</p> // need to make font smolar move up etc
                     // add other data 
                     // make it clicable 
                 </div>
@@ -76,21 +77,5 @@ func formatEndStart(start, end time.Time) string {
 	endTime := end.Format("15")
 	return fmt.Sprintf("start-%s end-%s", startTime, endTime)
 }
-
-// func scheduleToDays(schedules []store.Schedule) map[time.Weekday][]store.Schedule{
-//     scheduleByDays := make(map[time.Weekday][]store.Schedule)
-
-//     for _, schedule := range schedules {
-// 		weekday := schedule.Start.Weekday()
-// 		fmt.Printf("Schedule ID: %d, Weekday: %s, Start: %s\n", schedule.ID, weekday, schedule.Start)
-// 		scheduleByDays[weekday] = append(scheduleByDays[weekday], schedule)
-// 	}
-
-//     // for day, days := range scheduleByDays{
-
-//     //     fmt.Println(day," : ",days)
-//     // }
-//     return scheduleByDays
-// }
 
 

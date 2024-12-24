@@ -54,6 +54,7 @@ func CSPMiddleware(next http.Handler) http.Handler {
 			nonceSet.ResponseTargets,
 			nonceSet.Tw,
 			nonceSet.HtmxCSSHash)
+		// cspHeader = "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;" // comments to disable and enable the csp for testing
 		w.Header().Set("Content-Security-Policy", cspHeader)
 
 		next.ServeHTTP(w, r.WithContext(ctx))

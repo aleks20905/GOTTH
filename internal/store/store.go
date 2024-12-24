@@ -41,6 +41,7 @@ type ScheduleStore interface {
 	GetCourses() (*[]Schedule, error)
 	GetSpecs() (*[]Schedule, error)
 	GetGroupNames() (*[]Schedule, error)
+	GetAllscheduelsUrl() (*[]Schedule, error)
 }
 type SessionStore interface {
 	CreateSession(session *Session) (*Session, error)
