@@ -29,7 +29,7 @@ func (h *weeklyListHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// spec := r.URL.Query().Get("spec")
 	// groupName := r.URL.Query().Get("group_name")
 
-	idk, err := h.scheduleStore.GetAllscheduelsUrl()
+	idk, err := h.scheduleStore.GetAllscheduleUrls()
 	if err != nil {
 		http.Error(w, "Error loading schedule"+err.Error(), http.StatusInternalServerError)
 		return

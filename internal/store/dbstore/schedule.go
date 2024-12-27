@@ -60,7 +60,7 @@ func (s *ScheduleStore) GetCourses() (*[]store.Schedule, error) {
 	return &shedule, err
 }
 
-func (s *ScheduleStore) GetAllscheduelsUrl() (*[]store.Schedule, error) {
+func (s *ScheduleStore) GetAllscheduleUrls() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("course", "spec", "group_name").Order("course").Find(&shedule).Error

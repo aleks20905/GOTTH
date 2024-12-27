@@ -209,17 +209,17 @@ func nav() templ.Component {
 			templ_7745c5c3_Var10 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-primary-600 p-4\"><div class=\"container flex justify-between\"><ol class=\"flex space-x-4\"><li><a class=\"text-gray-200\" href=\"/\">Home</a></li><li><a class=\"text-gray-200\" href=\"/about\">About</a></li><li><a class=\"text-gray-200\" href=\"/weeklyList\">WeeklyList</a></li></ol><ol class=\"flex space-x-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-navbarBackground text-navbarText p-4\"><div class=\"container flex justify-between\"><!-- Left-side navigation links --><ol class=\"flex space-x-4\"><li><a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"/\">Home</a></li><li><a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"/about\">About</a></li><li><a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"/weeklyList\">WeeklyList</a></li></ol><!-- Right-side user options --><ol class=\"flex space-x-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if middleware.GetUser(ctx) != nil {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><button class=\"text-gray-200\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Logout</button></li>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><button class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Logout</button></li>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><a class=\"text-gray-200\" href=\"/register\">Register</a></li><li><a class=\"text-gray-200\" href=\"/login\">Login</a></li>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"/register\">Register</a></li><li><a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"/login\">Login</a></li>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -257,7 +257,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"flex flex-col h-full\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"bg-background text-text flex flex-col min-h-screen scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -265,7 +265,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex-1 container \">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex-1 container mx-auto p-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

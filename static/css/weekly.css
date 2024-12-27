@@ -2,12 +2,12 @@
   --numDays: 5;
   --numHours: 12;
   --timeHeight: 60px;
-  --calBgColor: #fff1f8;
-  --eventBorderColor: #f2d3d8;
+  --calBgColor: #524b4e39;
+  --eventBorderColor: #181a1b;
   --eventColor1: #ffd6d1;
   --eventColor2: #fafaa3;
   --eventColor3: #e2f8ff;
-  --eventColor4: #d1ffe6;
+  --eventColor4: #303624f0;
 }
 
 .calendar {
@@ -56,7 +56,14 @@
 .events {
   min-height: 200px;
   border-radius: 5px;
-  background: var(--calBgColor);
+  background: repeating-linear-gradient(
+    180deg,
+    var(--calBgColor) ,
+    var(--calBgColor) 15px,
+    black 15px,
+    black 16px
+  );
+  /* background: var(--calBgColor); */
   padding: 0.5rem;
 }
 
@@ -130,6 +137,14 @@
   font-size: 1.5rem;
   font-weight: 300;
   margin: 0;
+}
+
+.date-day::first-letter {
+  font-weight: 700;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  font-style: italic;
 }
 
 @media (min-width: 768px) {

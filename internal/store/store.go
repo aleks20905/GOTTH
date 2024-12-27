@@ -28,6 +28,8 @@ type Schedule struct {
 	GroupS    string    `json:"groups"`
 	Des       string    `json:"des"`
 }
+
+// not hooked to the db just for misc stuff
 type DayScheduels struct {
 	Day     string
 	Shedule []Schedule
@@ -41,7 +43,7 @@ type ScheduleStore interface {
 	GetCourses() (*[]Schedule, error)
 	GetSpecs() (*[]Schedule, error)
 	GetGroupNames() (*[]Schedule, error)
-	GetAllscheduelsUrl() (*[]Schedule, error)
+	GetAllscheduleUrls() (*[]Schedule, error)
 }
 type SessionStore interface {
 	CreateSession(session *Session) (*Session, error)
