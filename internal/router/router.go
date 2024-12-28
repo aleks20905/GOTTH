@@ -12,13 +12,21 @@ import (
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 )
 
-func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *dbstore.SessionStore, passwordHasher *passwordhash.PasswordHash, scheduleStore *dbstore.ScheduleStore) *chi.Mux {
+type RouterDependencies struct {
+	Config         config.Config
+	UserStore      *dbstore.UserStore
+	SessionStore   *dbstore.SessionStore
+	PasswordHasher *passwordhash.PasswordHash
+	ScheduleStore  *dbstore.ScheduleStore
+}
+
+func SetupRouter(deps RouterDependencies) *chi.Mux {
 	r := chi.NewRouter()
 
 	fileServer := http.FileServer(http.Dir("./static"))
 	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
-	authMiddleware := middleware.NewAuthMiddleware(sessionStore, cfg.SessionCookieName)
+	authMiddleware := middleware.NewAuthMiddleware(deps.SessionStore, deps.Config.SessionCookieName)
 
 	r.Group(func(r chi.Router) {
 		r.Use(
@@ -35,30 +43,30 @@ func SetupRouter(cfg config.Config, userStore *dbstore.UserStore, sessionStore *
 		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
 
 		r.Get("/weekly", handlers.NewWeeklyHandler(handlers.GetWeeklyHandlerParams{
-			ScheduleStore: scheduleStore,
+			ScheduleStore: deps.ScheduleStore,
 		}).ServeHTTP)
 
 		r.Get("/weeklyList", handlers.NewWeeklyListHandler(handlers.GetWeeklyListHandlerParams{
-			ScheduleStore: scheduleStore,
+			ScheduleStore: deps.ScheduleStore,
 		}).ServeHTTP)
 
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 
 		r.Post("/register", handlers.NewPostRegisterHandler(handlers.PostRegisterHandlerParams{
-			UserStore: userStore,
+			UserStore: deps.UserStore,
 		}).ServeHTTP)
 
 		r.Get("/login", handlers.NewGetLoginHandler().ServeHTTP)
 
 		r.Post("/login", handlers.NewPostLoginHandler(handlers.PostLoginHandlerParams{
-			UserStore:         userStore,
-			SessionStore:      sessionStore,
-			PasswordHash:      passwordHasher,
-			SessionCookieName: cfg.SessionCookieName,
+			UserStore:         deps.UserStore,
+			SessionStore:      deps.SessionStore,
+			PasswordHash:      deps.PasswordHasher,
+			SessionCookieName: deps.Config.SessionCookieName,
 		}).ServeHTTP)
 
 		r.Post("/logout", handlers.NewPostLogoutHandler(handlers.PostLogoutHandlerParams{
-			SessionCookieName: cfg.SessionCookieName,
+			SessionCookieName: deps.Config.SessionCookieName,
 		}).ServeHTTP)
 	})
 
