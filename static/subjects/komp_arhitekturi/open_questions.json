@@ -1,0 +1,94 @@
+[
+    {
+      "question": "паралелна MIMD архитектура със слабо взаимодейвите между процесорите би могла да се квалифицира като:",
+      "answer": "CC-NUMA"
+    },
+    {
+      "question": "каква архитектура и какъв процесор използва мобилния ви телефон ",
+      "answer": "arm"
+    },
+    {
+        "question": "дайте определение за архитектура на набора от инструкции (ISA) ",
+        "answer": "idk"
+    },
+    {
+        "question": "Колко CCX модула използва ryzen 7 процесор от трете поколение",
+        "answer": "2х4 core"
+    },
+     {
+        "question": "intel или AMD бихте израли за настолен процесор обосновете се на кратко ",
+        "answer": "АМД"
+    },
+     {
+        "question": "MOSFET ",
+        "answer": "metal–oxide–semiconductor field-effect transistor"
+    },
+    {
+        "question": "какво означава съкращението SSE ",
+        "answer": "stream SIMD extention"
+    },
+    {
+        "question": "high bandwidth memory (HBM) e вид високоскоростна памет кято се използва за ",
+        "answer": "idk"
+    },
+    {
+        "question": "Опишете накратко каква функция изпълнява Processing Unit в архитектурата на фон Нойман, описваща принципен модел на компютърна система.",
+        "answer": "answer for OPENquestion"
+    }
+    ,
+     {
+        "question": "Коя процесорна архитектура е по-бърза скаларната или суперскаларната, обяснете защо",
+        "answer": "супер скаларната защото позволява за по голяма обработна на данни едновремемнно "
+    }
+    ,
+     {
+        "question": "Какво означава мерната единица FLOPS? ",
+        "answer": "answer for OPENquestion"
+    }
+    ,
+     {
+        "question": "Дайте определение за дълбочина на конвейера на скаларен процесор ",
+        "answer": "answer for OPENquestion"
+    }
+    ,
+     {
+        "question": "Дайте кратко определение за „компютърна архитектура",
+        "answer": "вида на инструкциите, осложняване и опростяването на желязото "
+    },
+    {
+        "question": "Какво означават съкращението ММХ? ",
+        "answer": "MultiMedia extension"
+    },
+    {
+        "question": "Кои са основните фази в работата на конвейера (pipeline) на скаларен процесор?",
+        "answer": "answer for OPENquestion"
+    },
+    {
+        "question": "Какво измерват компютърните benchmarks? ",
+        "answer": "Производителността на машината. Обикновено чрез отчитане на времето за изчисления."
+    },
+    {
+        "question": "Кои са основните фази в работата на конвейера (pipeline) на скаларен процесор?",
+        "answer": "fetch > decode > execute > write "
+    },
+    {
+        "question": "За какво служи TLB (Translation Lookaside Buffer) в архитектурата на съвременните процесори",
+        "answer": "преобразува виртуални аддреси в физични "
+    },
+    {
+        "question": "Какво означава съкращението АѴХ? ",
+        "answer": "  Advanced Vector Extensions"
+    },
+    {
+        "question": "Какво наричаме power wall при разработката на процесорите? Каква е приблизителната максимална стойност W/mm2 на отвежданата топлина? ",
+        "answer": "  Is used to describe the limitation of CPU clock rate, CPU design, and CPU performance improvements due to the thermal and electrical power constraints"
+    },
+    {
+        "question": "Дайте определение за кеш памет ",
+        "answer": "  Памет, която седи близко до ядрата, в кристала, с бърз достъп."
+    },
+    {
+        "question": "Каква задача изпълнява Вураѕѕ в EXECUTE фазата на конвейера? ",
+        "answer": "  Вместо да се зареди командата в кеш паметта се връща назад по конвейера, за скорост."
+    }
+]
