@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"math"
 	"strings"
 
 	"golang.org/x/crypto/argon2"
@@ -32,6 +33,7 @@ func NewHPasswordHash() *PasswordHash {
 var (
 	ErrInvalidHash         = errors.New("the encoded hash is not in the correct format")
 	ErrIncompatibleVersion = errors.New("incompatible version of argon2")
+	ErrIntegerOverflow     = errors.New("integer overflow detected")
 )
 
 func (h *PasswordHash) GenerateFromPassword(password string) (encodedHash string, err error) {
@@ -115,13 +117,25 @@ func (h *PasswordHash) decodeHash(encodedHash string) (p *params, salt, hash []b
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	p.saltLength = uint32(len(salt))
+
+	// Check for potential integer overflow before conversion
+	saltLen := len(salt)
+	if saltLen > math.MaxUint32 {
+		return nil, nil, nil, ErrIntegerOverflow
+	}
+	p.saltLength = uint32(saltLen)
 
 	hash, err = base64.RawStdEncoding.Strict().DecodeString(vals[5])
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	p.keyLength = uint32(len(hash))
+
+	// Check for potential integer overflow before conversion
+	hashLen := len(hash)
+	if hashLen > math.MaxUint32 {
+		return nil, nil, nil, ErrIntegerOverflow
+	}
+	p.keyLength = uint32(hashLen)
 
 	return p, salt, hash, nil
 }
