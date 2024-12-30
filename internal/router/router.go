@@ -6,6 +6,7 @@ import (
 	"goth/internal/hash/passwordhash"
 	"goth/internal/middleware"
 	"goth/internal/store/dbstore"
+	"goth/internal/store/jsonstore"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -18,6 +19,7 @@ type RouterDependencies struct {
 	SessionStore   *dbstore.SessionStore
 	PasswordHasher *passwordhash.PasswordHash
 	ScheduleStore  *dbstore.ScheduleStore
+	QestionStore   *jsonstore.QuestionStore
 }
 
 func SetupRouter(deps RouterDependencies) *chi.Mux {

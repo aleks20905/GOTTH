@@ -7,6 +7,7 @@ import (
 	"goth/internal/hash/passwordhash"
 	database "goth/internal/store/db"
 	"goth/internal/store/dbstore"
+	"goth/internal/store/jsonstore"
 	"log/slog"
 	"net/http"
 	"os"
@@ -62,6 +63,12 @@ func main() {
 		},
 	)
 
+	questionStore := jsonstore.NewQuestionStore(
+		jsonstore.NewQuestionStoreParams{
+			SubjectsDir: "static/subjects/", // Or configure this path in your config
+		},
+	)
+
 	// router dependencies
 	deps := router.RouterDependencies{
 		Config:         *cfg,
@@ -69,6 +76,7 @@ func main() {
 		SessionStore:   sessionStore,
 		PasswordHasher: passwordHasher,
 		ScheduleStore:  scheduleStore,
+		QestionStore:   questionStore,
 	}
 	r := router.SetupRouter(deps)
 
