@@ -120,10 +120,10 @@ func (s *QuestionStore) GetSubjectQuestions(subject string) (*store.SubjectQuest
 }
 
 // GetAllSubjects returns a list of all available subjects
-func (s *QuestionStore) GetAllSubjects() []string {
+func (s *QuestionStore) GetAllSubjects() ([]string, error) {
 	subjects := make([]string, 0, len(s.entry))
 	for subject := range s.entry {
 		subjects = append(subjects, subject)
 	}
-	return subjects
+	return subjects, nil
 }

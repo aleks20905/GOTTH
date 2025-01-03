@@ -1,0 +1,35 @@
+package templates
+import (
+	// "fmt"
+    // "time"
+    "strconv"
+	"goth/internal/store"
+)
+
+templ GetCloseQuestion(i int, subject string,q store.Question) {
+
+  <form action="/submit/question" method="POST" hx-post="/submit/question" hx-target={"#result" + strconv.Itoa(q.ID) } hx-swap="innerHTML">
+    <div class="question">
+      <lable id="Nquestion" > question: { strconv.Itoa(i+1) } </lable>
+      <lable for="userAnswer">  { q.Question }</lable>
+
+      <select name="userAnswer" id="userAnswer">
+      for _,con := range q.Options{
+        <option value={con}> { con } </option>
+      }     
+      </select>
+
+      <input type="hidden" name="subject" value={subject} >
+      <input type="hidden" name="Nquestion" value={strconv.Itoa(q.ID)} >
+      <input type="submit" value="Submit">
+
+      // alternativ 
+      // button check (selectedValue, q.Answer)
+        
+
+      <lable id={"result" + strconv.Itoa(q.ID) }></lable>
+      
+    </div>
+  </form> 
+}
+

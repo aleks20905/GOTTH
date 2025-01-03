@@ -1,0 +1,33 @@
+package templates
+import (
+	// "fmt"
+    // "time"
+    "strconv"
+	"goth/internal/store"
+)
+
+templ GetOpenQuestion(i int,q store.OpenQuestion) {
+
+    <form action="/submit/question" method="POST" hx-post="/submit/Open_question" hx-target={"#resultOpen" + strconv.Itoa(q.ID) } hx-swap="innerHTML">
+    <div class="question">
+        <lable id="question" > question: { strconv.Itoa(i+1) } </lable>
+        <lable for="userAnswer">  { q.Question }</lable>
+
+        <input  name="userAnswer"  id="userAnswer" type="text" value="">
+
+
+        <input type="hidden" name="question" value={q.Question} >
+        <input type="submit" value="Submit">
+
+        // alternativ 
+        // button check (selectedValue, q.Answer)
+            
+
+        <lable id={"resultOpen" + strconv.Itoa(q.ID) }></lable>
+      
+    </div>
+  </form> 
+
+
+}
+
