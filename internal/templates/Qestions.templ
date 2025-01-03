@@ -4,6 +4,7 @@ import (
     // "time"
     // "strconv"
 	"goth/internal/store"
+	// "fmt"
 )
 
 templ GetQuestion(subjectsLis []string, idk store.SubjectQuestions) {
@@ -15,6 +16,12 @@ templ GetQuestion(subjectsLis []string, idk store.SubjectQuestions) {
         <br>
     }
 
+    for i, q := range idk.MultipleChoice { 
+
+        // <p> {q.Question}</p>
+        // <p> { fmt.Sprintf("",i})</p>
+        @GetCloseQuestion(i, "kop_arhitekturi", q)
+    }
     <div class="question">
     
     </div>

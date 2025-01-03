@@ -110,13 +110,13 @@ func (s *QuestionStore) loadJSONFile(filePath string, target interface{}) error 
 	return json.Unmarshal(data, target)
 }
 
-// GetSubjectQuestions returns questions for a specific subject
-func (s *QuestionStore) GetSubjectQuestions(subject string) (*store.SubjectQuestions, bool) {
+// GetSubjectQuestions returns questions for a specific subject or an error if not found
+func (s *QuestionStore) GetSubjectQuestions(subject string) (*store.SubjectQuestions, error) {
 	questions, exists := s.entry[subject]
 	if !exists {
-		return nil, false
+		return nil, fmt.Errorf("subject '%s' not found", subject)
 	}
-	return &questions, true
+	return &questions, nil
 }
 
 // GetAllSubjects returns a list of all available subjects

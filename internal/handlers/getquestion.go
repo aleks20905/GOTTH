@@ -21,14 +21,20 @@ func NewSubjectQuestion(params GetgetSubjectQuestionParams) *getSubjectQuestion 
 }
 
 func (h *getSubjectQuestion) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
-	idk, err := h.qestionstore.GetAllSubjects()
+	subject := "komp_arhitekturi"
+	subjectList, err := h.qestionstore.GetAllSubjects()
 	if err != nil {
-		http.Error(w, "Error loading schedule", http.StatusInternalServerError)
+		http.Error(w, "Error getting subject there is no way to see this error !!! no way !!!", http.StatusInternalServerError) // if u see this error just pray
 		return
 	}
 
-	c := templates.GetQuestion(idk, store.SubjectQuestions{})
+	qestions, err := h.qestionstore.GetSubjectQuestions(subject)
+	if err != nil {
+		http.Error(w, "Error getting subjectsQestion", http.StatusInternalServerError)
+		return
+	}
+
+	c := templates.GetQuestion(subjectList, *qestions)
 	err = templates.Layout(c, "My website").Render(r.Context(), w)
 
 	if err != nil {

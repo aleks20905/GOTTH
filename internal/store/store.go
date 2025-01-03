@@ -72,6 +72,6 @@ type SessionStore interface {
 	GetUserFromSession(sessionID string, userID string) (*User, error)
 }
 type QuestionStorer interface {
-	GetSubjectQuestions(subject string) (*SubjectQuestions, bool)
+	GetSubjectQuestions(subject string) (*SubjectQuestions, error)
 	GetAllSubjects() ([]string, error)
 }

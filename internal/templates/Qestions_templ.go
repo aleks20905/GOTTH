@@ -13,6 +13,7 @@ import (
 	// "time"
 	// "strconv"
 	"goth/internal/store"
+	// "fmt"
 )
 
 func GetQuestion(subjectsLis []string, idk store.SubjectQuestions) templ.Component {
@@ -44,13 +45,23 @@ func GetQuestion(subjectsLis []string, idk store.SubjectQuestions) templ.Compone
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(course)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/Qestions.templ`, Line: 13, Col: 19}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/Qestions.templ`, Line: 14, Col: 19}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><br>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		for i, q := range idk.MultipleChoice {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("  ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = GetCloseQuestion(i, "kop_arhitekturi", q).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
