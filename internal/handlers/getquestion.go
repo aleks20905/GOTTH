@@ -21,7 +21,7 @@ func NewSubjectQuestion(params GetgetSubjectQuestionParams) *getSubjectQuestion 
 }
 
 func (h *getSubjectQuestion) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	subject := "komp_arhitekturi"
+	subject := "komp_mreji"
 	subjectList, err := h.qestionstore.GetAllSubjects()
 	if err != nil {
 		http.Error(w, "Error getting subject there is no way to see this error !!! no way !!!", http.StatusInternalServerError) // if u see this error just pray
