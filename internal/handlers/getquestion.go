@@ -72,6 +72,10 @@ func (h *getSubjectQuestion) HandleSubmitQuestion(w http.ResponseWriter, r *http
 
 	result := "<lable class=\"result wrong\"> Wrong Answer </lable>"
 	answers, err := h.qestionstore.GetCorrectAnswers(subject, nQuestion)
+	if err != nil {
+		http.Error(w, "Error Getting the answer", http.StatusInternalServerError)
+	}
+
 	if slices.Contains(answers, userAnswer) {
 		result = "<lable class=\"result corect\"> Corect Answer </lable>"
 	}
