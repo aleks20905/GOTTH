@@ -127,3 +127,23 @@ func (s *QuestionStore) GetAllSubjects() ([]string, error) {
 	}
 	return subjects, nil
 }
+
+// GetCorrectAnswers returns the correct answers for a multiple choice question
+func (s *QuestionStore) GetCorrectAnswers(subject string, questionID int) ([]string, error) {
+	questions, exists := s.entry[subject]
+	if !exists {
+		return nil, fmt.Errorf("subject %s not found", subject)
+	}
+
+	// Find the question with the matching ID
+	for _, q := range questions.MultipleChoice {
+		if q.ID == questionID {
+			// Return a copy of the answers to prevent modification
+			answers := make([]string, len(q.Answer))
+			copy(answers, q.Answer)
+			return answers, nil
+		}
+	}
+
+	return nil, fmt.Errorf("question with ID %d not found", questionID)
+}

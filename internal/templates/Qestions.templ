@@ -4,15 +4,23 @@ import (
     // "time"
     // "strconv"
 	"goth/internal/store"
-	// "fmt"
+	"fmt"
 )
 
-templ GetQuestion(subjectsLis []string, idk store.SubjectQuestions) {
+templ GetQuestion(subjectsLis []string, currentSubject string, idk store.SubjectQuestions) {
 
 
     for _, course := range subjectsLis {
-        <p> {course}</p>
+        // <p> {course}</p>
 
+        
+        <a class="text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out" href={ templ.SafeURL(fmt.Sprintf("/question?subject=%v", course)) } > 
+            
+            { course }
+            
+            <br>
+            // { fmt.Sprintf("course: %d spec: %v group: %v",course.Course, course.Spec, course.GroupName)} 
+        </a>
         <br>
     }
 
@@ -20,7 +28,7 @@ templ GetQuestion(subjectsLis []string, idk store.SubjectQuestions) {
 
         // <p> {q.Question}</p>
         // <p> { fmt.Sprintf("",i})</p>
-        @GetCloseQuestion(i, "kop_arhitekturi", q)
+        @GetCloseQuestion(i, currentSubject, q)
     }
     <div class="question">
     

@@ -75,7 +75,7 @@ func GetCloseQuestion(i int, subject string, q store.Question) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</lable> <select name=\"userAnswer\" id=\"userAnswer\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</lable> <select class=\"bg-gray-700 bg-opacity-90\" name=\"userAnswer\" id=\"userAnswer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -13,7 +13,7 @@ templ GetCloseQuestion(i int, subject string,q store.Question) {
       <lable id="Nquestion" > question: { strconv.Itoa(i+1) } </lable>
       <lable for="userAnswer">  { q.Question }</lable>
 
-      <select name="userAnswer" id="userAnswer">
+      <select class="bg-gray-700 bg-opacity-90" name="userAnswer" id="userAnswer">
       for _,con := range q.Options{
         <option value={con}> { con } </option>
       }     

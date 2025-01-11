@@ -74,4 +74,5 @@ type SessionStore interface {
 type QuestionStorer interface {
 	GetSubjectQuestions(subject string) (*SubjectQuestions, error)
 	GetAllSubjects() ([]string, error)
+	GetCorrectAnswers(subject string, questionID int) ([]string, error)
 }

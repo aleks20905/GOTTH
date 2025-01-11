@@ -12,11 +12,11 @@ import (
 	// "fmt"
 	// "time"
 	// "strconv"
+	"fmt"
 	"goth/internal/store"
-	// "fmt"
 )
 
-func GetQuestion(subjectsLis []string, idk store.SubjectQuestions) templ.Component {
+func GetQuestion(subjectsLis []string, currentSubject string, idk store.SubjectQuestions) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -38,20 +38,29 @@ func GetQuestion(subjectsLis []string, idk store.SubjectQuestions) templ.Compone
 		}
 		ctx = templ.ClearChildren(ctx)
 		for _, course := range subjectsLis {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <a class=\"text-gray-200 hover:text-white hover:bg-gray-700/50 px-6 py-3 rounded-lg transition-all duration-200 ease-in-out\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(course)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/Qestions.templ`, Line: 14, Col: 19}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			var templ_7745c5c3_Var2 templ.SafeURL = templ.SafeURL(fmt.Sprintf("/question?subject=%v", course))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><br>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(course)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/Qestions.templ`, Line: 19, Col: 20}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<br></a><br>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -61,7 +70,7 @@ func GetQuestion(subjectsLis []string, idk store.SubjectQuestions) templ.Compone
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = GetCloseQuestion(i, "kop_arhitekturi", q).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = GetCloseQuestion(i, currentSubject, q).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

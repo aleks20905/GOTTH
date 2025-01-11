@@ -56,6 +56,10 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 			Qestionstore: deps.QestionStore,
 		}).ServeHTTP)
 
+		r.Post("/submit/question", handlers.NewSubjectQuestion(handlers.GetgetSubjectQuestionParams{
+			Qestionstore: deps.QestionStore,
+		}).HandleSubmitQuestion)
+
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 
 		r.Post("/register", handlers.NewPostRegisterHandler(handlers.PostRegisterHandlerParams{
