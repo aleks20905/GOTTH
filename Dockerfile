@@ -4,7 +4,7 @@ RUN apk add --no-cache gcc musl-dev sqlite-dev git
 
 WORKDIR /build
 
-RUN go install github.com/a-h/templ/cmd/templ@0.2.793
+RUN go install github.com/a-h/templ/cmd/templ@v0.2.793
 
 ENV PATH="$PATH:/go/bin"
 
