@@ -20,6 +20,8 @@ type RouterDependencies struct {
 	PasswordHasher *passwordhash.PasswordHash
 	ScheduleStore  *dbstore.ScheduleStore
 	QestionStore   *jsonstore.QuestionStore
+	ProductStore   *dbstore.ProductStore
+	CartStore      *dbstore.CartStore
 }
 
 func SetupRouter(deps RouterDependencies) *chi.Mux {
@@ -43,6 +45,23 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 		r.Get("/", handlers.NewHomeHandler().ServeHTTP)
 
 		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
+
+		// Product routes
+		productListHandler := handlers.NewProductListHandler(deps.ProductStore)
+		productHandler := handlers.NewProductHandler(deps.ProductStore)
+		// Routes
+		r.Get("/products", productListHandler.ServeHTTP)
+		r.Get("/products/{id}", productHandler.ServeHTTP)
+
+		cartHandler := handlers.NewCartHandler(handlers.NewCartHandlerParams{
+			CartStore:    deps.CartStore,
+			ProductStore: deps.ProductStore,
+		})
+		// Routes
+		r.Get("/cart", cartHandler.ServeHTTP)
+		r.Post("/cart/add/{id}", cartHandler.AddToCart)
+		r.Post("/cart/remove/{id}", cartHandler.RemoveFromCart)
+		r.Post("/cart/update/{id}", cartHandler.UpdateQuantity)
 
 		r.Get("/weekly", handlers.NewWeeklyHandler(handlers.GetWeeklyHandlerParams{
 			ScheduleStore: deps.ScheduleStore,

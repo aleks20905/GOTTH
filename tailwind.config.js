@@ -17,7 +17,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: colors.gray[400], // Lighter gray for primary accents
+        primary: {
+          DEFAULT: colors.gray[400],
+          400: colors.gray[400],
+          500: colors.gray[500],
+          600: colors.gray[600],
+        },
         secondary: colors.amber[400], // Amber accent for hover and links
         neutral: 'rgb(24, 26, 27)', // Darker gray background (RGB(24, 26, 27))
         background: 'rgb(24, 26, 27)', // Darker gray background (RGB(24, 26, 27))

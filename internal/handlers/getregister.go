@@ -12,12 +12,11 @@ func NewGetRegisterHandler() *GetRegisterHandler {
 }
 
 func (h *GetRegisterHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := templates.RegisterPage()
-	err := templates.Layout(c, "My website").Render(r.Context(), w)
+	c := templates.RegisterForm("", "") // Empty error, empty email
+	err := templates.Layout(c, "Register").Render(r.Context(), w)
 
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return
 	}
-
 }

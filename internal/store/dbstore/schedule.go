@@ -31,7 +31,6 @@ func (s *ScheduleStore) GetGroupNames() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("group_name").Order("group_name").Find(&shedule).Error
-
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +41,6 @@ func (s *ScheduleStore) GetSpecs() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("spec").Order("spec").Find(&shedule).Error
-
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +51,6 @@ func (s *ScheduleStore) GetCourses() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("course").Find(&shedule).Error
-
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +61,6 @@ func (s *ScheduleStore) GetAllscheduleUrls() (*[]store.Schedule, error) {
 	var shedule []store.Schedule
 
 	err := s.db.Distinct("course", "spec", "group_name").Order("course").Find(&shedule).Error
-
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +68,6 @@ func (s *ScheduleStore) GetAllscheduleUrls() (*[]store.Schedule, error) {
 }
 
 func (s *ScheduleStore) GetSchedules(course uint, spec string, group_name string) (*[]store.Schedule, error) {
-
 	validate := validator.New()
 	req := valiedRequest{
 		Course:    course,
@@ -88,7 +83,6 @@ func (s *ScheduleStore) GetSchedules(course uint, spec string, group_name string
 	var shedule []store.Schedule
 
 	err = s.db.Where("course = ? AND spec = ? AND group_name = ?", course, spec, group_name).Order("start ").Find(&shedule).Error
-
 	if err != nil {
 		return nil, err
 	}

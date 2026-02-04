@@ -5,6 +5,7 @@ import (
 	"errors"
 	"goth/internal/config"
 	"goth/internal/hash/passwordhash"
+	"goth/internal/router"
 	database "goth/internal/store/db"
 	"goth/internal/store/dbstore"
 	"goth/internal/store/jsonstore"
@@ -14,8 +15,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	"goth/internal/router"
 )
 
 /*
@@ -69,6 +68,9 @@ func main() {
 		},
 	)
 
+	productStore := dbstore.NewProductStore(dbstore.NewProductStoreParams{DB: db})
+	cartStore := dbstore.NewCartStore(dbstore.NewCartStoreParams{DB: db})
+
 	// router dependencies
 	deps := router.RouterDependencies{
 		Config:         *cfg,
@@ -77,6 +79,8 @@ func main() {
 		PasswordHasher: passwordHasher,
 		ScheduleStore:  scheduleStore,
 		QestionStore:   questionStore,
+		ProductStore:   productStore,
+		CartStore:      cartStore,
 	}
 	r := router.SetupRouter(deps)
 
@@ -103,6 +107,8 @@ func main() {
 	<-killSig
 
 	logger.Info("Shutting down server")
+
+	logger.Info("scheduleStore")
 
 	// Create a context with a timeout for shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -24,7 +24,6 @@ func NewSubjectQuestion(params GetgetSubjectQuestionParams) *getSubjectQuestion 
 }
 
 func (h *getSubjectQuestion) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
 	subject := "komp_mreji"
 
 	gotSubject := r.URL.Query().Get("subject")
@@ -46,7 +45,6 @@ func (h *getSubjectQuestion) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	c := templates.GetQuestion(subjectList, subject, *qestions)
 	err = templates.Layout(c, "My website").Render(r.Context(), w)
-
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return
@@ -59,7 +57,6 @@ func (h *getSubjectQuestion) HandleSubmitQuestion(w http.ResponseWriter, r *http
 	subject := r.FormValue("subject")
 	userAnswer := r.FormValue("userAnswer")
 	nQuestion, err := strconv.Atoi(r.FormValue("Nquestion"))
-
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 	}
@@ -82,5 +79,4 @@ func (h *getSubjectQuestion) HandleSubmitQuestion(w http.ResponseWriter, r *http
 
 	fmt.Println("Nquestion :", answers)
 	w.Write([]byte(result))
-
 }

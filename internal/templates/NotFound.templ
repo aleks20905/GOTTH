@@ -1,5 +1,38 @@
 package templates
 
 templ NotFound() {
-	<h1>404</h1>
+    <div class="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+        <div class="text-center">
+            <!-- Big 404 -->
+            <h1 class="text-9xl font-bold text-gray-700">
+                404
+            </h1>
+            
+            <!-- Glowing accent line -->
+            <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto my-6 rounded-full"></div>
+            
+            <!-- Message -->
+            <h2 class="text-2xl font-semibold text-white mb-4">
+                Page not found
+            </h2>
+            <p class="text-gray-400 mb-8 max-w-md mx-auto">
+                Oops! The page you're looking for doesn't exist or is still being built.
+            </p>
+            
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                    href="/" 
+                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                    Go Home
+                </a>
+            </div>
+            
+            <!-- Fun emoji -->
+            <p class="mt-12 text-6xl">
+                🔍
+            </p>
+        </div>
+    </div>
 }

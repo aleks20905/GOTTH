@@ -12,7 +12,6 @@ import (
 )
 
 func TestGetAboutHandler(t *testing.T) {
-
 	testCases := []struct {
 		name               string
 		expectedStatusCode int
@@ -27,7 +26,6 @@ func TestGetAboutHandler(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			assert := assert.New(t)
 
 			handler := NewAboutHandler()
@@ -51,9 +49,6 @@ func TestGetAboutHandler(t *testing.T) {
 			assert.Equal(tc.expectedStatusCode, rr.Code, "handler returned wrong status code: got %v want %v", rr.Code, tc.expectedStatusCode)
 
 			assert.True(bytes.Contains(rr.Body.Bytes(), tc.expectedBody), "handler returned unexpected body: got %v want %v", rr.Body.String(), tc.expectedBody)
-
 		})
-
 	}
-
 }
