@@ -62,6 +62,9 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 		r.Post("/cart/add/{id}", cartHandler.AddToCart)
 		r.Post("/cart/remove/{id}", cartHandler.RemoveFromCart)
 		r.Post("/cart/update/{id}", cartHandler.UpdateQuantity)
+		r.Get("/cart/badge", cartHandler.GetBadge)
+
+		r.Get("/quantity", cartHandler.UpdateQuantitySelector)
 
 		r.Get("/weekly", handlers.NewWeeklyHandler(handlers.GetWeeklyHandlerParams{
 			ScheduleStore: deps.ScheduleStore,

@@ -73,7 +73,7 @@ templ CartItemCard(item store.CartItem) {
         <div class="flex-grow">
             <h3 class="text-xl font-bold text-white">{ item.Product.Name }</h3>
             <p class="text-gray-400">{ item.Product.Weight }</p>
-            <p class="text-green-400 font-bold">${ fmt.Sprintf("%.2f", item.Product.Price) }</p>
+            <p class="text-green-400 font-bold">€{ fmt.Sprintf("%.2f", item.Product.Price) }</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -98,7 +98,7 @@ templ CartItemCard(item store.CartItem) {
 
         <div class="text-right min-w-20">
             <p class="text-xl font-bold text-green-400">
-                ${ fmt.Sprintf("%.2f", item.Product.Price * float64(item.Quantity)) }
+                €{ fmt.Sprintf("%.2f", item.Product.Price * float64(item.Quantity)) }
             </p>
         </div>
 
@@ -118,7 +118,7 @@ templ OrderSummary(totalItems int, totalPrice float64) {
         <div class="space-y-4 mb-6">
             <div class="flex justify-between text-gray-400">
                 <span>Subtotal ({ fmt.Sprintf("%d", totalItems) } items)</span>
-                <span class="text-white">${ fmt.Sprintf("%.2f", totalPrice) }</span>
+                <span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice) }</span>
             </div>
             <div class="flex justify-between text-gray-400">
                 <span>Shipping</span>
@@ -126,7 +126,7 @@ templ OrderSummary(totalItems int, totalPrice float64) {
             </div>
             <div class="flex justify-between text-gray-400">
                 <span>Tax (10%)</span>
-                <span class="text-white">${ fmt.Sprintf("%.2f", totalPrice * 0.10) }</span>
+                <span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice * 0.10) }</span>
             </div>
         </div>
 
@@ -134,7 +134,7 @@ templ OrderSummary(totalItems int, totalPrice float64) {
             <div class="flex justify-between">
                 <span class="text-xl font-bold text-white">Total</span>
                 <span class="text-2xl font-bold text-green-400">
-                    ${ fmt.Sprintf("%.2f", totalPrice * 1.10) }
+                    €{ fmt.Sprintf("%.2f", totalPrice * 1.10) }
                 </span>
             </div>
         </div>
@@ -149,9 +149,14 @@ templ OrderSummary(totalItems int, totalPrice float64) {
     </div>
 }
 
-templ CartBadge(count int) {
+templ CartBadge() {
+    <span id="cart-badge" hx-get="/cart/badge" hx-trigger="load" hx-swap="innerHTML">
+    </span>
+}
+
+templ CartCount(count int) {
     if count > 0 {
-        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
             { fmt.Sprintf("%d", count) }
         </span>
     }

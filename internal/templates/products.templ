@@ -18,7 +18,7 @@ templ Products(products []store.Product) {
                     <a href="/cart" class="relative bg-gray-700 hover:bg-gray-600 p-4 rounded-xl transition">
                         <span class="text-2xl">🛒</span>
                         <span id="cart-badge">
-                            @CartBadge(0)
+                            @CartBadge()
                         </span>
                     </a>
                 </div>
@@ -56,7 +56,7 @@ templ ProductCard(product store.Product) {
 
             <div class="flex items-center justify-between mb-4">
                 <span class="text-2xl font-bold text-green-400">
-                    ${ fmt.Sprintf("%.2f", product.Price) }
+                    €{ fmt.Sprintf("%.2f", product.Price) }
                 </span>
                 <span class="text-gray-500 text-sm">{ product.Weight }</span>
             </div>

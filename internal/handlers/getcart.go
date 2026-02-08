@@ -49,16 +49,39 @@ func (h *CartHandler) AddToCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verify product exists
-	_, err = h.ProductStore.GetProductByID(uint(productID))
+	// Parse the request body
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	quantity := 1
+	if q := r.FormValue("quantity"); q != "" {
+		if parsed, err := strconv.Atoi(q); err == nil && parsed > 0 {
+			quantity = parsed
+		}
+	}
+
+	// Verify product exists and check stock
+	product, err := h.ProductStore.GetProductByID(uint(productID))
 	if err != nil {
 		http.Error(w, "Product not found", http.StatusNotFound)
 		return
 	}
 
+	// Don't allow adding more than stock
+	if quantity > product.Stock {
+		quantity = product.Stock
+	}
+
+	if quantity <= 0 {
+		http.Error(w, "Product out of stock", http.StatusBadRequest)
+		return
+	}
+
 	cart := h.getCart(w, r)
 
-	err = h.CartStore.AddItem(cart.ID, uint(productID), 1)
+	err = h.CartStore.AddItem(cart.ID, uint(productID), quantity)
 	if err != nil {
 		http.Error(w, "Failed to add item", http.StatusInternalServerError)
 		return
@@ -68,7 +91,7 @@ func (h *CartHandler) AddToCart(w http.ResponseWriter, r *http.Request) {
 	cart, _ = h.CartStore.GetCartWithItems(cart.ID)
 	totalItems, _ := h.CartStore.GetCartTotals(cart)
 
-	templates.CartBadge(totalItems).Render(r.Context(), w)
+	templates.CartCount(totalItems).Render(r.Context(), w)
 }
 
 // POST /cart/remove/{id}
@@ -152,4 +175,58 @@ func (h *CartHandler) getOrCreateSessionID(w http.ResponseWriter, r *http.Reques
 	})
 
 	return sessionID
+}
+
+// GET /quantity - handles quantity +/- buttons
+func (h *CartHandler) UpdateQuantitySelector(w http.ResponseWriter, r *http.Request) {
+	productID, _ := strconv.ParseUint(r.URL.Query().Get("product_id"), 10, 32)
+	current, _ := strconv.Atoi(r.URL.Query().Get("current"))
+	max, _ := strconv.Atoi(r.URL.Query().Get("max"))
+	delta, _ := strconv.Atoi(r.URL.Query().Get("delta"))
+
+	newVal := current + delta
+	if newVal < 1 {
+		newVal = 1
+	}
+	if newVal > max {
+		newVal = max
+	}
+
+	templates.ProductControls(uint(productID), newVal, max).Render(r.Context(), w)
+}
+
+// GET /cart/badge
+func (h *CartHandler) GetBadge(w http.ResponseWriter, r *http.Request) {
+	count := h.GetCartCount(r)
+	templates.CartCount(count).Render(r.Context(), w)
+}
+
+func (h *CartHandler) GetCartCount(r *http.Request) int {
+	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
+
+	var userID *uint
+	var sessionID string
+
+	if ok && user != nil {
+		userID = &user.ID
+	} else {
+		cookie, err := r.Cookie("cart_session")
+		if err != nil {
+			return 0
+		}
+		sessionID = cookie.Value
+	}
+
+	cart, err := h.CartStore.GetOrCreateCart(userID, sessionID)
+	if err != nil {
+		return 0
+	}
+
+	cart, err = h.CartStore.GetCartWithItems(cart.ID)
+	if err != nil {
+		return 0
+	}
+
+	totalItems, _ := h.CartStore.GetCartTotals(cart)
+	return totalItems
 }
