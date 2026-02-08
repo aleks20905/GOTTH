@@ -6,7 +6,6 @@ import (
 	"goth/internal/hash/passwordhash"
 	"goth/internal/middleware"
 	"goth/internal/store/dbstore"
-	"goth/internal/store/jsonstore"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -18,8 +17,6 @@ type RouterDependencies struct {
 	UserStore      *dbstore.UserStore
 	SessionStore   *dbstore.SessionStore
 	PasswordHasher *passwordhash.PasswordHash
-	ScheduleStore  *dbstore.ScheduleStore
-	QestionStore   *jsonstore.QuestionStore
 	ProductStore   *dbstore.ProductStore
 	CartStore      *dbstore.CartStore
 }
@@ -65,22 +62,6 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 		r.Get("/cart/badge", cartHandler.GetBadge)
 
 		r.Get("/quantity", cartHandler.UpdateQuantitySelector)
-
-		r.Get("/weekly", handlers.NewWeeklyHandler(handlers.GetWeeklyHandlerParams{
-			ScheduleStore: deps.ScheduleStore,
-		}).ServeHTTP)
-
-		r.Get("/weeklyList", handlers.NewWeeklyListHandler(handlers.GetWeeklyListHandlerParams{
-			ScheduleStore: deps.ScheduleStore,
-		}).ServeHTTP)
-
-		r.Get("/question", handlers.NewSubjectQuestion(handlers.GetgetSubjectQuestionParams{
-			Qestionstore: deps.QestionStore,
-		}).ServeHTTP)
-
-		r.Post("/submit/question", handlers.NewSubjectQuestion(handlers.GetgetSubjectQuestionParams{
-			Qestionstore: deps.QestionStore,
-		}).HandleSubmitQuestion)
 
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 

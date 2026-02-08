@@ -8,7 +8,6 @@ import (
 	"goth/internal/router"
 	database "goth/internal/store/db"
 	"goth/internal/store/dbstore"
-	"goth/internal/store/jsonstore"
 	"log/slog"
 	"net/http"
 	"os"
@@ -43,30 +42,9 @@ func main() {
 	db := database.MustOpen(cfg.DatabaseName, cfg.DatabaseUrl)
 	passwordHasher := passwordhash.NewHPasswordHash()
 
-	userStore := dbstore.NewUserStore(
-		dbstore.NewUserStoreParams{
-			DB:           db,
-			PasswordHash: passwordHasher,
-		},
-	)
+	userStore := dbstore.NewUserStore(dbstore.NewUserStoreParams{DB: db, PasswordHash: passwordHasher})
 
-	sessionStore := dbstore.NewSessionStore(
-		dbstore.NewSessionStoreParams{
-			DB: db,
-		},
-	)
-
-	scheduleStore := dbstore.NewScheduleStore(
-		dbstore.NewScheduleStoreParams{
-			DB: db,
-		},
-	)
-
-	questionStore := jsonstore.NewQuestionStore(
-		jsonstore.NewQuestionStoreParams{
-			SubjectsDir: "static/subjects/", // Or configure this path in your config
-		},
-	)
+	sessionStore := dbstore.NewSessionStore(dbstore.NewSessionStoreParams{DB: db})
 
 	productStore := dbstore.NewProductStore(dbstore.NewProductStoreParams{DB: db})
 	cartStore := dbstore.NewCartStore(dbstore.NewCartStoreParams{DB: db})
@@ -77,8 +55,6 @@ func main() {
 		UserStore:      userStore,
 		SessionStore:   sessionStore,
 		PasswordHasher: passwordHasher,
-		ScheduleStore:  scheduleStore,
-		QestionStore:   questionStore,
 		ProductStore:   productStore,
 		CartStore:      cartStore,
 	}

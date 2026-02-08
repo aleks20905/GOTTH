@@ -42,7 +42,6 @@ func MustOpen(dbName, dbUrl string) *gorm.DB {
 	err = db.AutoMigrate(
 		&store.User{},
 		&store.Session{},
-		&store.Schedule{},
 		&store.Product{},  // NEW
 		&store.Cart{},     // NEW
 		&store.CartItem{}, // NEW
