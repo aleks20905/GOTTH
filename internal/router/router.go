@@ -43,6 +43,8 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 
 		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
 
+		r.Get("/account", handlers.NewAccountHandler().ServeHTTP)
+
 		// Product routes
 		productListHandler := handlers.NewProductListHandler(deps.ProductStore)
 		productHandler := handlers.NewProductHandler(deps.ProductStore)
