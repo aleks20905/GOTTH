@@ -4,3 +4,4 @@ tmp
 tailwindcss
 .env
 *.env
+result
