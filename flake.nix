@@ -31,8 +31,7 @@
           ldflags = [ "-s" "-w" "-X main.Environment=production" ];
 
           postInstall = ''
-            mkdir -p $out/share/${appName}
-            cp -r ./static $out/share/${appName}/
+            cp -r ./static $out/
             mv $out/bin/cmd $out/bin/${appName}
           '';
         };
