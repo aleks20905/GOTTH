@@ -31,7 +31,8 @@
           ldflags = [ "-s" "-w" "-X main.Environment=production" ];
 
           postInstall = ''
-            cp -r ./static $out/
+            mkdir -p $out/share/goth
+            cp -r ./static $out/share/goth/
             mv $out/bin/cmd $out/bin/${appName}
           '';
         };
@@ -58,18 +59,9 @@
           in {
             options.services.goth = {
               enable = mkEnableOption "goth service";
-              port = mkOption {
-                type = types.port;
-                default = 4000;
-              };
-              dataDir = mkOption {
-                type = types.path;
-                default = "/var/lib/goth";
-              };
-              openFirewall = mkOption {
-                type = types.bool;
-                default = false;
-              };
+              port = mkOption { type = types.port; default = 4000; };
+              dataDir = mkOption { type = types.path; default = "/var/lib/goth"; };
+              openFirewall = mkOption { type = types.bool; default = false; };
             };
 
             config = mkIf cfg.enable {
@@ -79,7 +71,7 @@
                 home = cfg.dataDir;
                 createHome = true;
               };
-              users.groups.goth = { };
+              users.groups.goth = {};
               systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0750 goth goth -" ];
 
               systemd.services.goth = {
@@ -106,10 +98,8 @@
                 };
               };
 
-              networking.firewall.allowedTCPPorts =
-                mkIf cfg.openFirewall [ cfg.port ];
+              networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
             };
           };
       };
 }
-
