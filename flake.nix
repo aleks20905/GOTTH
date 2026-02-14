@@ -59,9 +59,18 @@
           in {
             options.services.goth = {
               enable = mkEnableOption "goth service";
-              port = mkOption { type = types.port; default = 4000; };
-              dataDir = mkOption { type = types.path; default = "/var/lib/goth"; };
-              openFirewall = mkOption { type = types.bool; default = false; };
+              port = mkOption {
+                type = types.port;
+                default = 4000;
+              };
+              dataDir = mkOption {
+                type = types.path;
+                default = "/var/lib/goth";
+              };
+              openFirewall = mkOption {
+                type = types.bool;
+                default = false;
+              };
             };
 
             config = mkIf cfg.enable {
@@ -71,7 +80,7 @@
                 home = cfg.dataDir;
                 createHome = true;
               };
-              users.groups.goth = {};
+              users.groups.goth = { };
               systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0750 goth goth -" ];
 
               systemd.services.goth = {
@@ -85,11 +94,16 @@
                   ExecStart = "${pkg}/bin/goth";
                   WorkingDirectory = cfg.dataDir;
                   Restart = "always";
+
+                  #environt stuff !!!
                   Environment = [
                     "PORT=${toString cfg.port}"
                     "DATABASE_URL=sqlite:${cfg.dataDir}/goth.db"
                     "STATIC_DIR=${pkg}/share/goth/static"
+
                   ];
+                  #environt stuff !!!
+
                   NoNewPrivileges = true;
                   PrivateTmp = true;
                   ProtectSystem = "strict";
@@ -98,8 +112,11 @@
                 };
               };
 
-              networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+              networking.firewall.allowedTCPPorts =
+                mkIf cfg.openFirewall [ cfg.port ];
+
             };
           };
       };
 }
+

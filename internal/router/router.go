@@ -1,13 +1,13 @@
 package router
 
 import (
+	"net/http"
+
 	"goth/internal/config"
 	"goth/internal/handlers"
 	"goth/internal/hash/passwordhash"
 	"goth/internal/middleware"
 	"goth/internal/store/dbstore"
-	"net/http"
-	"os"
 
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
@@ -25,13 +25,7 @@ type RouterDependencies struct {
 func SetupRouter(deps RouterDependencies) *chi.Mux {
 	r := chi.NewRouter()
 
-	// Use STATIC_DIR from env, fallback to ./static for dev
-	staticDir := os.Getenv("STATIC_DIR")
-	if staticDir == "" {
-		staticDir = "./static"
-	}
-
-	fileServer := http.FileServer(http.Dir(staticDir))
+	fileServer := http.FileServer(http.Dir(deps.Config.StaticDir))
 	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
 	authMiddleware := middleware.NewAuthMiddleware(deps.SessionStore, deps.Config.SessionCookieName)

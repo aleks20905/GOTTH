@@ -3,17 +3,18 @@ package main
 import (
 	"context"
 	"errors"
-	"goth/internal/config"
-	"goth/internal/hash/passwordhash"
-	"goth/internal/router"
-	database "goth/internal/store/db"
-	"goth/internal/store/dbstore"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"goth/internal/config"
+	"goth/internal/hash/passwordhash"
+	"goth/internal/router"
+	database "goth/internal/store/db"
+	"goth/internal/store/dbstore"
 )
 
 /*
@@ -39,7 +40,7 @@ func main() {
 
 	cfg := config.MustLoadConfig()
 
-	db := database.MustOpen(cfg.DatabaseName, cfg.DatabaseUrl)
+	db := database.MustOpen(cfg.DatabaseName, cfg.DatabaseURL)
 	passwordHasher := passwordhash.NewHPasswordHash()
 
 	userStore := dbstore.NewUserStore(dbstore.NewUserStoreParams{DB: db, PasswordHash: passwordHasher})
