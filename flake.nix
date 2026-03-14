@@ -16,7 +16,7 @@
           pname = appName;
           version = "0.1.0";
           src = ./.;
-          vendorHash = "sha256-NEDkSYvYrIM05TJ2YGTyiTcrubCeqSqKbLh5bTswIJA=";
+          vendorHash = "sha256-XRU34H4nndmTp1Y24zDzz5K4EVfwkozNT+PPAsdvp0w=";
           doCheck = false;
 
           nativeBuildInputs = [ pkgs.templ pkgs.tailwindcss_4 ];
