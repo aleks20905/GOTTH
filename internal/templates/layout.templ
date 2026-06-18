@@ -1,142 +1,140 @@
 package templates
 
 import (
-    "os"
-    "goth/internal/middleware"
+	"goth/internal/middleware"
+	"os"
 )
 
 templ header(title string) {
-    <head>
-        <title>{ title }</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <script src="/static/script/htmx.min.js" nonce={ middleware.GetHtmxNonce(ctx) }></script>
-        <script src="/static/script/response-targets.js" nonce={ middleware.GetResponseTargetsNonce(ctx) }></script>
-        if os.Getenv("env") == "production" {
-            <link rel="stylesheet" href="/static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/>
-        } else {
-            <link rel="stylesheet" href="/static/css/style.css" nonce={ middleware.GetTwNonce(ctx) }/>
-        }
-    </head>
+	<head>
+		<title>{ title }</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<script src="/static/script/htmx.min.js" nonce={ middleware.GetHtmxNonce(ctx) }></script>
+		<script src="/static/script/response-targets.js" nonce={ middleware.GetResponseTargetsNonce(ctx) }></script>
+		if os.Getenv("env") == "production" {
+			<link rel="stylesheet" href="/static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/>
+		} else {
+			<link rel="stylesheet" href="/static/css/style.css" nonce={ middleware.GetTwNonce(ctx) }/>
+		}
+	</head>
 }
 
 templ footer() {
-    <footer class="bg-navbarBackground border-t border-gray-800">
-        <div class="container mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Brand -->
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-4">🥩 МесоМаркет</h3>
-                    <p class="text-gray-400 text-sm">
-                        Вашият магазин за качествено месо.
-                    </p>
-                </div>
-                <!-- Links -->
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Бързи връзки</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/" class="text-gray-400 hover:text-secondary transition-colors">Начало</a></li>
-                        <li><a href="/products" class="text-gray-400 hover:text-secondary transition-colors">Продукти</a></li>
-                        <li><a href="/about" class="text-gray-400 hover:text-secondary transition-colors">За нас</a></li>
-                    </ul>
-                </div>
-                <!-- Contact -->
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Контакт</h4>
-                    <p class="text-sm text-gray-400">hello@mesomarket.bg</p>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-                © 2024 МесоМаркет. Всички права запазени.
-            </div>
-        </div>
-    </footer>
+	<footer class="bg-navbarBackground border-t border-gray-800">
+		<div class="container mx-auto px-4 py-8">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				<!-- Brand -->
+				<div>
+					<h3 class="text-lg font-bold text-white mb-4">🥩 МесоМаркет</h3>
+					<p class="text-gray-400 text-sm">
+						Вашият магазин за качествено месо.
+					</p>
+				</div>
+				<!-- Links -->
+				<div>
+					<h4 class="font-semibold text-white mb-4">Бързи връзки</h4>
+					<ul class="space-y-2 text-sm">
+						<li><a href="/" class="text-gray-400 hover:text-secondary transition-colors">Начало</a></li>
+						<li><a href="/products" class="text-gray-400 hover:text-secondary transition-colors">Продукти</a></li>
+						<li><a href="/about" class="text-gray-400 hover:text-secondary transition-colors">За нас</a></li>
+					</ul>
+				</div>
+				<!-- Contact -->
+				<div>
+					<h4 class="font-semibold text-white mb-4">Контакт</h4>
+					<p class="text-sm text-gray-400">hello@mesomarket.bg</p>
+				</div>
+			</div>
+			<div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+				© 2024 МесоМаркет. Всички права запазени.
+			</div>
+		</div>
+	</footer>
 }
 
 templ nav() {
-    <nav class="bg-navbarBackground border-b border-gray-800 sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="/" class="text-xl font-bold text-white hover:text-secondary transition-colors">
-                    🥩 МесоМаркет
-                </a>
-                <!-- Desktop links -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/products" class="text-gray-300 hover:text-white transition-colors">Продукти</a>
-                    <a href="/about" class="text-gray-300 hover:text-white transition-colors">За нас</a>
-                    if middleware.GetUser(ctx) != nil {
-                        <a href="/cart" class="text-gray-300 hover:text-white transition-colors">🛒 Количка</a>
-                        <button
-                            class="bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium"
-                            hx-target="body"
-                            hx-swap="innerHTML"
-                            hx-post="/logout"
-                        >
-                            Изход
-                        </button>
-                    } else {
-                        <a href="/login" class="text-gray-300 hover:text-white transition-colors">Вход</a>
-                        <a href="/register" class="bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium">
-                            Регистрация
-                        </a>
-                    }
-                </div>
-                <!-- Mobile menu -->
-                <div class="md:hidden">
-                    <details>
-                        <summary class="text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 list-none cursor-pointer">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </summary>
-                        <div class="absolute left-0 right-0 bg-navbarBackground border-t border-gray-800 py-4 space-y-2 px-4">
-                            <a href="/products" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
-                                🥩 Продукти
-                            </a>
-                            <a href="/about" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
-                                ℹ️ За нас
-                            </a>
-                            if middleware.GetUser(ctx) != nil {
-                                <a href="/cart" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
-                                    🛒 Количка
-                                </a>
-                                <button
-                                    class="w-full text-left text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200"
-                                    hx-target="body"
-                                    hx-swap="innerHTML"
-                                    hx-post="/logout"
-                                >
-                                    🔑 Изход
-                                </button>
-                            } else {
-                                <a href="/login" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
-                                    🔑 Вход
-                                </a>
-                                <a href="/register" class="block text-secondary hover:text-amber-300 hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200 font-medium">
-                                    ✨ Регистрация
-                                </a>
-                            }
-                        </div>
-                    </details>
-                </div>
-            </div>
-        </div>
-    </nav>
+	<nav class="bg-navbarBackground border-b border-gray-800 sticky top-0 z-50">
+		<div class="container mx-auto px-4">
+			<div class="flex justify-between items-center h-16">
+				<!-- Logo -->
+				<a href="/" class="text-xl font-bold text-white hover:text-secondary transition-colors">
+					🥩 МесоМаркет
+				</a>
+				<!-- Desktop links -->
+				<div class="hidden md:flex items-center space-x-6">
+					<a href="/products" class="text-gray-300 hover:text-white transition-colors">Продукти</a>
+					<a href="/about" class="text-gray-300 hover:text-white transition-colors">За нас</a>
+					if middleware.GetUser(ctx) != nil {
+						<a href="/cart" class="text-gray-300 hover:text-white transition-colors">🛒 Количка</a>
+						<button
+							class="bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium"
+							hx-target="body"
+							hx-swap="innerHTML"
+							hx-post="/logout"
+						>
+							Изход
+						</button>
+					} else {
+						<a href="/login" class="text-gray-300 hover:text-white transition-colors">Вход</a>
+						<a href="/register" class="bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium">
+							Регистрация
+						</a>
+					}
+				</div>
+				<!-- Mobile menu -->
+				<div class="md:hidden">
+					<details>
+						<summary class="text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 list-none cursor-pointer">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+							</svg>
+						</summary>
+						<div class="absolute left-0 right-0 bg-navbarBackground border-t border-gray-800 py-4 space-y-2 px-4">
+							<a href="/products" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+								🥩 Продукти
+							</a>
+							<a href="/about" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+								ℹ️ За нас
+							</a>
+							if middleware.GetUser(ctx) != nil {
+								<a href="/cart" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+									🛒 Количка
+								</a>
+								<button
+									class="w-full text-left text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200"
+									hx-target="body"
+									hx-swap="innerHTML"
+									hx-post="/logout"
+								>
+									🔑 Изход
+								</button>
+							} else {
+								<a href="/login" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+									🔑 Вход
+								</a>
+								<a href="/register" class="block text-secondary hover:text-amber-300 hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200 font-medium">
+									✨ Регистрация
+								</a>
+							}
+						</div>
+					</details>
+				</div>
+			</div>
+		</div>
+	</nav>
 }
 
-
-
 templ Layout(contents templ.Component, title string) {
-    <!DOCTYPE html>
-    <html lang="bg">
-        @header(title)
-        <body class="bg-background text-text flex flex-col min-h-screen">
-            @nav()
-            <main class="flex-1 container mx-auto px-4 py-8">
-                @contents
-            </main>
-            @footer()
-        </body>
-    </html>
+	<!DOCTYPE html>
+	<html lang="bg">
+		@header(title)
+		<body class="bg-background text-text flex flex-col min-h-screen">
+			@nav()
+			<main class="flex-1 container mx-auto px-4 py-8">
+				@contents
+			</main>
+			@footer()
+		</body>
+	</html>
 }

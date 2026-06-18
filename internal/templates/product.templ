@@ -1,224 +1,210 @@
 package templates
 
 import (
-    "fmt"
-    "goth/internal/store"
+	"fmt"
+	"goth/internal/store"
 )
 
 type ProductData struct {
-    ID          string
-    Name        string
-    Description string
-    Price       float64
-    Weight      string
-    Image       string 
-    Category    string
-    InStock     bool
+	ID          string
+	Name        string
+	Description string
+	Price       float64
+	Weight      string
+	Image       string
+	Category    string
+	InStock     bool
 }
 
 templ ProductDetail(product store.Product) {
-    <div class="min-h-screen bg-background">
-        <!-- Header -->
-        <div class="bg-neutral shadow-lg">
-            <div class="max-w-6xl mx-auto px-4 py-6">
-                <div class="flex items-center justify-between">
-                    <a href="/products" class="text-xl font-bold text-white hover:text-secondary transition">
-                        ← Назад към продукти
-                    </a>
-                    <a href="/cart" class="relative bg-gray-700 hover:bg-gray-600 p-4 rounded-xl transition">
-                        <span class="text-2xl">🛒</span>
-                        <span id="cart-badge">
-                            @CartBadge()
-                        </span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Product Detail -->
-        <div class="max-w-6xl mx-auto px-4 py-12">
-            <div class="bg-neutral rounded-3xl overflow-hidden shadow-2xl border border-gray-700">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                    <!-- Product Image -->
-                    <div class="bg-gradient-to-br from-gray-700 to-gray-800 p-12 flex items-center justify-center min-h-96">
-                        <span class="text-[12rem]">{ product.Image }</span>
-                    </div>
-
-                    <!-- Product Info -->
-                    <div class="p-8 lg:p-12 flex flex-col justify-center">
-                        <!-- Category badge -->
-                        <span class="inline-block bg-secondary text-background text-sm px-3 py-1 rounded-full w-fit mb-4 font-medium">
-                            { product.Category }
-                        </span>
-
-                        <h1 class="text-4xl font-bold text-white mb-4">{ product.Name }</h1>
-
-                        <p class="text-gray-400 text-lg mb-6">{ product.Description }</p>
-
-                        <!-- Details -->
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-gray-700 rounded-xl p-4">
-                                <p class="text-gray-400 text-sm">Тегло</p>
-                                <p class="text-white font-bold text-lg">{ product.Weight }</p>
-                            </div>
-                            <div class="bg-gray-700 rounded-xl p-4">
-                                <p class="text-gray-400 text-sm">Наличност</p>
-                                if product.Stock > 0 {
-                                    <p class="text-green-400 font-bold text-lg">{ fmt.Sprintf("%d", product.Stock) } налични</p>
-                                } else {
-                                    <p class="text-red-400 font-bold text-lg">Изчерпан</p>
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Price -->
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="text-4xl font-bold text-secondary">
-                                { fmt.Sprintf("%.2f", product.Price) } €.
-                            </span>
-                            <span class="text-gray-500">за опаковка</span>
-                        </div>
-
-                        <!-- Quantity selector + Add to cart -->
-                        if product.Stock > 0 {
-                            <div id="product-controls">
-                                @ProductControls(product.ID, 1, product.Stock)
-                            </div>
-                        } else {
-                            <button disabled class="w-full py-4 bg-gray-600 text-gray-400 font-bold text-xl rounded-xl cursor-not-allowed">
-                                Изчерпан
-                            </button>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="min-h-screen bg-background">
+		<!-- Header -->
+		<div class="bg-neutral shadow-lg">
+			<div class="max-w-6xl mx-auto px-4 py-6">
+				<div class="flex items-center justify-between">
+					<a href="/products" class="text-xl font-bold text-white hover:text-secondary transition">
+						← Назад към продукти
+					</a>
+					<a href="/cart" class="relative bg-gray-700 hover:bg-gray-600 p-4 rounded-xl transition">
+						<span class="text-2xl">🛒</span>
+						<span id="cart-badge">
+							@CartBadge()
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- Product Detail -->
+		<div class="max-w-6xl mx-auto px-4 py-12">
+			<div class="bg-neutral rounded-3xl overflow-hidden shadow-2xl border border-gray-700">
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+					<!-- Product Image -->
+					<div class="bg-gradient-to-br from-gray-700 to-gray-800 p-12 flex items-center justify-center min-h-96">
+						<span class="text-[12rem]">{ product.Image }</span>
+					</div>
+					<!-- Product Info -->
+					<div class="p-8 lg:p-12 flex flex-col justify-center">
+						<!-- Category badge -->
+						<span class="inline-block bg-secondary text-background text-sm px-3 py-1 rounded-full w-fit mb-4 font-medium">
+							{ product.Category }
+						</span>
+						<h1 class="text-4xl font-bold text-white mb-4">{ product.Name }</h1>
+						<p class="text-gray-400 text-lg mb-6">{ product.Description }</p>
+						<!-- Details -->
+						<div class="grid grid-cols-2 gap-4 mb-6">
+							<div class="bg-gray-700 rounded-xl p-4">
+								<p class="text-gray-400 text-sm">Тегло</p>
+								<p class="text-white font-bold text-lg">{ product.Weight }</p>
+							</div>
+							<div class="bg-gray-700 rounded-xl p-4">
+								<p class="text-gray-400 text-sm">Наличност</p>
+								if product.Stock > 0 {
+									<p class="text-green-400 font-bold text-lg">{ fmt.Sprintf("%d", product.Stock) } налични</p>
+								} else {
+									<p class="text-red-400 font-bold text-lg">Изчерпан</p>
+								}
+							</div>
+						</div>
+						<!-- Price -->
+						<div class="flex items-center justify-between mb-8">
+							<span class="text-4xl font-bold text-secondary">
+								{ fmt.Sprintf("%.2f", product.Price) } €.
+							</span>
+							<span class="text-gray-500">за опаковка</span>
+						</div>
+						<!-- Quantity selector + Add to cart -->
+						if product.Stock > 0 {
+							<div id="product-controls">
+								@ProductControls(product.ID, 1, product.Stock)
+							</div>
+						} else {
+							<button disabled class="w-full py-4 bg-gray-600 text-gray-400 font-bold text-xl rounded-xl cursor-not-allowed">
+								Изчерпан
+							</button>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
 templ ProductControls(productID uint, quantity int, maxStock int) {
-    <div class="space-y-4">
-        <!-- Quantity selector -->
-        <div class="flex items-center gap-4">
-            <span class="text-gray-400">Количество:</span>
-            <div class="flex items-center bg-gray-700 rounded-xl">
-                if quantity > 1 {
-                    <button
-                        type="button"
-                        class="w-12 h-12 text-white hover:bg-gray-600 rounded-l-xl transition font-bold text-xl"
-                        hx-get={ fmt.Sprintf("/quantity?product_id=%d&current=%d&max=%d&delta=-1", productID, quantity, maxStock) }
-                        hx-target="#product-controls"
-                        hx-swap="innerHTML"
-                    >
-                        -
-                    </button>
-                } else {
-                    <button
-                        type="button"
-                        class="w-12 h-12 text-gray-500 rounded-l-xl font-bold text-xl cursor-not-allowed"
-                        disabled
-                    >
-                        -
-                    </button>
-                }
-                <span class="w-16 h-12 flex items-center justify-center text-white font-bold text-lg">
-                    { fmt.Sprintf("%d", quantity) }
-                </span>
-                if quantity < maxStock {
-                    <button
-                        type="button"
-                        class="w-12 h-12 text-white hover:bg-gray-600 rounded-r-xl transition font-bold text-xl"
-                        hx-get={ fmt.Sprintf("/quantity?product_id=%d&current=%d&max=%d&delta=1", productID, quantity, maxStock) }
-                        hx-target="#product-controls"
-                        hx-swap="innerHTML"
-                    >
-                        +
-                    </button>
-                } else {
-                    <button
-                        type="button"
-                        class="w-12 h-12 text-gray-500 rounded-r-xl font-bold text-xl cursor-not-allowed"
-                        disabled
-                    >
-                        +
-                    </button>
-                }
-            </div>
-        </div>
-
-        <!-- Add to cart button -->
-        <button
-            class="w-full py-4 bg-secondary hover:bg-amber-300 text-background font-bold text-xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
-            hx-post={ fmt.Sprintf("/cart/add/%d", productID) }
-            hx-vals={ fmt.Sprintf(`{"quantity": "%d"}`, quantity) }
-            hx-target="#cart-badge"
-            hx-swap="innerHTML"
-        >
-            🛒 Добави в количката
-        </button>
-
-        <!-- Success message (shown via hx-on) -->
-        <div id="add-success" class="hidden text-center text-green-400 font-medium">
-            ✓ Добавено в количката!
-        </div>
-    </div>
+	<div class="space-y-4">
+		<!-- Quantity selector -->
+		<div class="flex items-center gap-4">
+			<span class="text-gray-400">Количество:</span>
+			<div class="flex items-center bg-gray-700 rounded-xl">
+				if quantity > 1 {
+					<button
+						type="button"
+						class="w-12 h-12 text-white hover:bg-gray-600 rounded-l-xl transition font-bold text-xl"
+						hx-get={ fmt.Sprintf("/quantity?product_id=%d&current=%d&max=%d&delta=-1", productID, quantity, maxStock) }
+						hx-target="#product-controls"
+						hx-swap="innerHTML"
+					>
+						-
+					</button>
+				} else {
+					<button
+						type="button"
+						class="w-12 h-12 text-gray-500 rounded-l-xl font-bold text-xl cursor-not-allowed"
+						disabled
+					>
+						-
+					</button>
+				}
+				<span class="w-16 h-12 flex items-center justify-center text-white font-bold text-lg">
+					{ fmt.Sprintf("%d", quantity) }
+				</span>
+				if quantity < maxStock {
+					<button
+						type="button"
+						class="w-12 h-12 text-white hover:bg-gray-600 rounded-r-xl transition font-bold text-xl"
+						hx-get={ fmt.Sprintf("/quantity?product_id=%d&current=%d&max=%d&delta=1", productID, quantity, maxStock) }
+						hx-target="#product-controls"
+						hx-swap="innerHTML"
+					>
+						+
+					</button>
+				} else {
+					<button
+						type="button"
+						class="w-12 h-12 text-gray-500 rounded-r-xl font-bold text-xl cursor-not-allowed"
+						disabled
+					>
+						+
+					</button>
+				}
+			</div>
+		</div>
+		<!-- Add to cart button -->
+		<button
+			class="w-full py-4 bg-secondary hover:bg-amber-300 text-background font-bold text-xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+			hx-post={ fmt.Sprintf("/cart/add/%d", productID) }
+			hx-vals={ fmt.Sprintf(`{"quantity": "%d"}`, quantity) }
+			hx-target="#cart-badge"
+			hx-swap="innerHTML"
+		>
+			🛒 Добави в количката
+		</button>
+		<!-- Success message (shown via hx-on) -->
+		<div id="add-success" class="hidden text-center text-green-400 font-medium">
+			✓ Добавено в количката!
+		</div>
+	</div>
 }
 
 templ ProductList(products []ProductData) {
-    <div class="min-h-screen bg-background py-12 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl font-bold text-white mb-4">
-                    🥩 Нашите Меса
-                </h1>
-                <p class="text-gray-400 text-lg">
-                    Премиум качество месо, доставено прясно до вашата врата
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                for _, product := range products {
-                    <a href={ templ.SafeURL("/products/" + product.ID) } class="group">
-                        <div class="bg-neutral rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-700 hover:border-secondary/30">
-                            <!-- Product Image -->
-                            <div class="bg-gray-700 h-48 flex items-center justify-center group-hover:bg-gray-600 transition">
-                                <span class="text-7xl">{ product.Image }</span>
-                            </div>
-
-                            <!-- Product Info -->
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs px-2 py-1 bg-secondary text-background rounded-full font-medium">
-                                        { product.Category }
-                                    </span>
-                                    if product.InStock {
-                                        <span class="text-xs text-green-400">● В наличност</span>
-                                    } else {
-                                        <span class="text-xs text-red-400">● Изчерпан</span>
-                                    }
-                                </div>
-
-                                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-secondary transition">
-                                    { product.Name }
-                                </h3>
-
-                                <p class="text-gray-400 text-sm mb-4 line-clamp-2">
-                                    { product.Description }
-                                </p>
-
-                                <div class="flex items-center justify-between">
-                                    <span class="text-2xl font-bold text-secondary">
-                                        { fmt.Sprintf("%.2f", product.Price) } €.
-                                    </span>
-                                    <span class="text-gray-500 text-sm">
-                                        { product.Weight }
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                }
-            </div>
-        </div>
-    </div>
+	<div class="min-h-screen bg-background py-12 px-4">
+		<div class="max-w-6xl mx-auto">
+			<div class="text-center mb-12">
+				<h1 class="text-4xl font-bold text-white mb-4">
+					🥩 Нашите Меса
+				</h1>
+				<p class="text-gray-400 text-lg">
+					Премиум качество месо, доставено прясно до вашата врата
+				</p>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				for _, product := range products {
+					<a href={ templ.SafeURL("/products/" + product.ID) } class="group">
+						<div class="bg-neutral rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-700 hover:border-secondary/30">
+							<!-- Product Image -->
+							<div class="bg-gray-700 h-48 flex items-center justify-center group-hover:bg-gray-600 transition">
+								<span class="text-7xl">{ product.Image }</span>
+							</div>
+							<!-- Product Info -->
+							<div class="p-6">
+								<div class="flex items-center justify-between mb-2">
+									<span class="text-xs px-2 py-1 bg-secondary text-background rounded-full font-medium">
+										{ product.Category }
+									</span>
+									if product.InStock {
+										<span class="text-xs text-green-400">● В наличност</span>
+									} else {
+										<span class="text-xs text-red-400">● Изчерпан</span>
+									}
+								</div>
+								<h3 class="text-xl font-bold text-white mb-2 group-hover:text-secondary transition">
+									{ product.Name }
+								</h3>
+								<p class="text-gray-400 text-sm mb-4 line-clamp-2">
+									{ product.Description }
+								</p>
+								<div class="flex items-center justify-between">
+									<span class="text-2xl font-bold text-secondary">
+										{ fmt.Sprintf("%.2f", product.Price) } €.
+									</span>
+									<span class="text-gray-500 text-sm">
+										{ product.Weight }
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+				}
+			</div>
+		</div>
+	</div>
 }

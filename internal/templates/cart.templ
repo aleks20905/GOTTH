@@ -1,163 +1,149 @@
 package templates
 
 import (
-    "fmt"
-    "goth/internal/store"
+	"fmt"
+	"goth/internal/store"
 )
 
 templ CartPage(cart *store.Cart, totalItems int, totalPrice float64) {
-    <div class="min-h-screen bg-gray-900">
-        <!-- Header -->
-        <div class="bg-gray-800 shadow-lg">
-            <div class="max-w-6xl mx-auto px-4 py-6">
-                <div class="flex items-center justify-between">
-                    <a href="/products" class="text-xl font-bold text-white hover:text-blue-400 transition">
-                        ← Back to Shop
-                    </a>
-                    <h1 class="text-3xl font-bold text-white">🛒 Shopping Cart</h1>
-                    <div class="w-32"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-6xl mx-auto px-4 py-8">
-            <div id="cart-content">
-                @CartContent(cart, totalItems, totalPrice)
-            </div>
-        </div>
-    </div>
+	<div class="min-h-screen bg-gray-900">
+		<!-- Header -->
+		<div class="bg-gray-800 shadow-lg">
+			<div class="max-w-6xl mx-auto px-4 py-6">
+				<div class="flex items-center justify-between">
+					<a href="/products" class="text-xl font-bold text-white hover:text-blue-400 transition">
+						← Back to Shop
+					</a>
+					<h1 class="text-3xl font-bold text-white">🛒 Shopping Cart</h1>
+					<div class="w-32"></div>
+				</div>
+			</div>
+		</div>
+		<div class="max-w-6xl mx-auto px-4 py-8">
+			<div id="cart-content">
+				@CartContent(cart, totalItems, totalPrice)
+			</div>
+		</div>
+	</div>
 }
 
 templ CartContent(cart *store.Cart, totalItems int, totalPrice float64) {
-    if len(cart.Items) == 0 {
-        @EmptyCart()
-    } else {
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-4">
-                <h2 class="text-xl font-bold text-white mb-4">
-                    { fmt.Sprintf("%d", totalItems) } items in your cart
-                </h2>
-                
-                for _, item := range cart.Items {
-                    @CartItemCard(item)
-                }
-            </div>
-
-            <div class="lg:col-span-1">
-                @OrderSummary(totalItems, totalPrice)
-            </div>
-        </div>
-    }
+	if len(cart.Items) == 0 {
+		@EmptyCart()
+	} else {
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<div class="lg:col-span-2 space-y-4">
+				<h2 class="text-xl font-bold text-white mb-4">
+					{ fmt.Sprintf("%d", totalItems) } items in your cart
+				</h2>
+				for _, item := range cart.Items {
+					@CartItemCard(item)
+				}
+			</div>
+			<div class="lg:col-span-1">
+				@OrderSummary(totalItems, totalPrice)
+			</div>
+		</div>
+	}
 }
 
 templ EmptyCart() {
-    <div class="text-center py-20">
-        <div class="text-8xl mb-6">🛒</div>
-        <h2 class="text-3xl font-bold text-white mb-4">Your cart is empty</h2>
-        <p class="text-gray-400 mb-8">Time to add some delicious meats!</p>
-        <a 
-            href="/products" 
-            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl transition"
-        >
-            🥩 Browse Products
-        </a>
-    </div>
+	<div class="text-center py-20">
+		<div class="text-8xl mb-6">🛒</div>
+		<h2 class="text-3xl font-bold text-white mb-4">Your cart is empty</h2>
+		<p class="text-gray-400 mb-8">Time to add some delicious meats!</p>
+		<a
+			href="/products"
+			class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl transition"
+		>
+			🥩 Browse Products
+		</a>
+	</div>
 }
 
 templ CartItemCard(item store.CartItem) {
-    <div class="bg-gray-800 rounded-xl p-6 flex items-center gap-6">
-        <div class="bg-gray-700 rounded-xl w-20 h-20 flex items-center justify-center">
-            <span class="text-4xl">{ item.Product.Image }</span>
-        </div>
-
-        <div class="flex-grow">
-            <h3 class="text-xl font-bold text-white">{ item.Product.Name }</h3>
-            <p class="text-gray-400">{ item.Product.Weight }</p>
-            <p class="text-green-400 font-bold">€{ fmt.Sprintf("%.2f", item.Product.Price) }</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-            <button 
-                class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg text-white font-bold"
-                hx-post={ fmt.Sprintf("/cart/update/%d?quantity=%d", item.ProductID, item.Quantity-1) }
-                hx-target="#cart-content"
-                hx-swap="innerHTML"
-            >-</button>
-            
-            <span class="text-white font-bold text-xl w-8 text-center">
-                { fmt.Sprintf("%d", item.Quantity) }
-            </span>
-            
-            <button 
-                class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg text-white font-bold"
-                hx-post={ fmt.Sprintf("/cart/update/%d?quantity=%d", item.ProductID, item.Quantity+1) }
-                hx-target="#cart-content"
-                hx-swap="innerHTML"
-            >+</button>
-        </div>
-
-        <div class="text-right min-w-20">
-            <p class="text-xl font-bold text-green-400">
-                €{ fmt.Sprintf("%.2f", item.Product.Price * float64(item.Quantity)) }
-            </p>
-        </div>
-
-        <button 
-            class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-lg text-white"
-            hx-post={ fmt.Sprintf("/cart/remove/%d", item.ProductID) }
-            hx-target="#cart-content"
-            hx-swap="innerHTML"
-        >🗑️</button>
-    </div>
+	<div class="bg-gray-800 rounded-xl p-6 flex items-center gap-6">
+		<div class="bg-gray-700 rounded-xl w-20 h-20 flex items-center justify-center">
+			<span class="text-4xl">{ item.Product.Image }</span>
+		</div>
+		<div class="flex-grow">
+			<h3 class="text-xl font-bold text-white">{ item.Product.Name }</h3>
+			<p class="text-gray-400">{ item.Product.Weight }</p>
+			<p class="text-green-400 font-bold">€{ fmt.Sprintf("%.2f", item.Product.Price) }</p>
+		</div>
+		<div class="flex items-center gap-3">
+			<button
+				class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg text-white font-bold"
+				hx-post={ fmt.Sprintf("/cart/update/%d?quantity=%d", item.ProductID, item.Quantity-1) }
+				hx-target="#cart-content"
+				hx-swap="innerHTML"
+			>-</button>
+			<span class="text-white font-bold text-xl w-8 text-center">
+				{ fmt.Sprintf("%d", item.Quantity) }
+			</span>
+			<button
+				class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg text-white font-bold"
+				hx-post={ fmt.Sprintf("/cart/update/%d?quantity=%d", item.ProductID, item.Quantity+1) }
+				hx-target="#cart-content"
+				hx-swap="innerHTML"
+			>+</button>
+		</div>
+		<div class="text-right min-w-20">
+			<p class="text-xl font-bold text-green-400">
+				€{ fmt.Sprintf("%.2f", item.Product.Price * float64(item.Quantity)) }
+			</p>
+		</div>
+		<button
+			class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-lg text-white"
+			hx-post={ fmt.Sprintf("/cart/remove/%d", item.ProductID) }
+			hx-target="#cart-content"
+			hx-swap="innerHTML"
+		>🗑️</button>
+	</div>
 }
 
 templ OrderSummary(totalItems int, totalPrice float64) {
-    <div class="bg-gray-800 rounded-xl p-6 sticky top-8">
-        <h2 class="text-2xl font-bold text-white mb-6">Order Summary</h2>
-        
-        <div class="space-y-4 mb-6">
-            <div class="flex justify-between text-gray-400">
-                <span>Subtotal ({ fmt.Sprintf("%d", totalItems) } items)</span>
-                <span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice) }</span>
-            </div>
-            <div class="flex justify-between text-gray-400">
-                <span>Shipping</span>
-                <span class="text-green-400">FREE</span>
-            </div>
-            <div class="flex justify-between text-gray-400">
-                <span>Tax (10%)</span>
-                <span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice * 0.10) }</span>
-            </div>
-        </div>
-
-        <div class="border-t border-gray-700 pt-4 mb-6">
-            <div class="flex justify-between">
-                <span class="text-xl font-bold text-white">Total</span>
-                <span class="text-2xl font-bold text-green-400">
-                    €{ fmt.Sprintf("%.2f", totalPrice * 1.10) }
-                </span>
-            </div>
-        </div>
-
-        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl transition mb-4">
-            🛒 Checkout
-        </button>
-
-        <a href="/products" class="block text-center text-blue-400 hover:text-blue-300">
-            ← Continue Shopping
-        </a>
-    </div>
+	<div class="bg-gray-800 rounded-xl p-6 sticky top-8">
+		<h2 class="text-2xl font-bold text-white mb-6">Order Summary</h2>
+		<div class="space-y-4 mb-6">
+			<div class="flex justify-between text-gray-400">
+				<span>Subtotal ({ fmt.Sprintf("%d", totalItems) } items)</span>
+				<span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice) }</span>
+			</div>
+			<div class="flex justify-between text-gray-400">
+				<span>Shipping</span>
+				<span class="text-green-400">FREE</span>
+			</div>
+			<div class="flex justify-between text-gray-400">
+				<span>Tax (10%)</span>
+				<span class="text-white">€{ fmt.Sprintf("%.2f", totalPrice * 0.10) }</span>
+			</div>
+		</div>
+		<div class="border-t border-gray-700 pt-4 mb-6">
+			<div class="flex justify-between">
+				<span class="text-xl font-bold text-white">Total</span>
+				<span class="text-2xl font-bold text-green-400">
+					€{ fmt.Sprintf("%.2f", totalPrice * 1.10) }
+				</span>
+			</div>
+		</div>
+		<button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl transition mb-4">
+			🛒 Checkout
+		</button>
+		<a href="/products" class="block text-center text-blue-400 hover:text-blue-300">
+			← Continue Shopping
+		</a>
+	</div>
 }
 
 templ CartBadge() {
-    <span id="cart-badge" hx-get="/cart/badge" hx-trigger="load" hx-swap="innerHTML">
-    </span>
+	<span id="cart-badge" hx-get="/cart/badge" hx-trigger="load" hx-swap="innerHTML"></span>
 }
 
 templ CartCount(count int) {
-    if count > 0 {
-        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-            { fmt.Sprintf("%d", count) }
-        </span>
-    }
+	if count > 0 {
+		<span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+			{ fmt.Sprintf("%d", count) }
+		</span>
+	}
 }
