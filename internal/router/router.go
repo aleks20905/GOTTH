@@ -1,8 +1,11 @@
 package router
 
 import (
+	"log"
 	"net/http"
+	"strings"
 
+	"goth/internal/agent"
 	"goth/internal/config"
 	"goth/internal/handlers"
 	"goth/internal/hash/passwordhash"
@@ -28,7 +31,14 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 	fileServer := http.FileServer(http.Dir(deps.Config.StaticDir))
 	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
-	authMiddleware := middleware.NewAuthMiddleware(deps.SessionStore, deps.Config.SessionCookieName)
+	sessionSecret := deps.Config.SessionSecret
+	if sessionSecret == "" {
+		// shortcut: sessions die on every restart, set SESSION_SECRET in the flake for prod
+		sessionSecret = middleware.GenerateRandomString(32)
+		log.Println("SESSION_SECRET not set, using ephemeral key")
+	}
+
+	authMiddleware := middleware.NewAuthMiddleware(deps.SessionStore, deps.Config.SessionCookieName, sessionSecret)
 
 	r.Group(func(r chi.Router) {
 		r.Use(
@@ -66,6 +76,11 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 
 		r.Get("/quantity", cartHandler.UpdateQuantitySelector)
 
+		r.Get("/computers", handlers.NewComputersHandler(handlers.ComputersHandlerParams{
+			Agents:       parseAgents(deps.Config.Agents),
+			StatusGetter: agent.NewClient(),
+		}).ServeHTTP)
+
 		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
 
 		r.Post("/register", handlers.NewPostRegisterHandler(handlers.PostRegisterHandlerParams{
@@ -79,6 +94,7 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 			SessionStore:      deps.SessionStore,
 			PasswordHash:      deps.PasswordHasher,
 			SessionCookieName: deps.Config.SessionCookieName,
+			SessionSecret:     sessionSecret,
 		}).ServeHTTP)
 
 		r.Post("/logout", handlers.NewPostLogoutHandler(handlers.PostLogoutHandlerParams{
@@ -87,4 +103,14 @@ func SetupRouter(deps RouterDependencies) *chi.Mux {
 	})
 
 	return r
+}
+
+func parseAgents(raw string) []string {
+	agents := []string{}
+	for _, part := range strings.Split(raw, ",") {
+		if part = strings.TrimSpace(part); part != "" {
+			agents = append(agents, part)
+		}
+	}
+	return agents
 }

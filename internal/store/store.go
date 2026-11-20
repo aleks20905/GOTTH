@@ -11,10 +11,11 @@ type User struct {
 }
 
 type Session struct {
-	ID        uint   `gorm:"primaryKey" json:"id"`
-	SessionID string `json:"session_id"`
-	UserID    uint   `json:"user_id"`
-	User      User   `gorm:"foreignKey:UserID" json:"user"`
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	SessionID string    `json:"session_id"`
+	UserID    uint      `json:"user_id"`
+	User      User      `gorm:"foreignKey:UserID" json:"user"`
+	ExpiresAt time.Time `json:"expires_at"`
 }
 
 type Cart struct {

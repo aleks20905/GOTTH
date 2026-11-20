@@ -6,6 +6,7 @@ import (
 	b64 "encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"goth/internal/auth"
 	"goth/internal/store"
 	"log"
 	"net/http"
@@ -30,6 +31,10 @@ func generateRandomString(length int) string {
 		return ""
 	}
 	return hex.EncodeToString(bytes)
+}
+
+func GenerateRandomString(length int) string {
+	return generateRandomString(length)
 }
 
 func CSPMiddleware(next http.Handler) http.Handler {
@@ -104,12 +109,14 @@ func GetTwNonce(ctx context.Context) string {
 type AuthMiddleware struct {
 	sessionStore      store.SessionStore
 	sessionCookieName string
+	sessionSecret     string
 }
 
-func NewAuthMiddleware(sessionStore store.SessionStore, sessionCookieName string) *AuthMiddleware {
+func NewAuthMiddleware(sessionStore store.SessionStore, sessionCookieName string, sessionSecret string) *AuthMiddleware {
 	return &AuthMiddleware{
 		sessionStore:      sessionStore,
 		sessionCookieName: sessionCookieName,
+		sessionSecret:     sessionSecret,
 	}
 }
 
@@ -128,7 +135,14 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 			return
 		}
 
-		decodedValue, err := b64.StdEncoding.DecodeString(sessionCookie.Value)
+		value, ok := auth.Verify(m.sessionSecret, sessionCookie.Value)
+
+		if !ok {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		decodedValue, err := b64.StdEncoding.DecodeString(value)
 
 		if err != nil {
 			next.ServeHTTP(w, r)
@@ -144,9 +158,6 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 
 		sessionID := splitValue[0]
 		userID := splitValue[1]
-
-		fmt.Println("sessionID", sessionID)
-		fmt.Println("userID", userID)
 
 		user, err := m.sessionStore.GetUserFromSession(sessionID, userID)
 

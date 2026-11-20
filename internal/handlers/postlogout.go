@@ -26,6 +26,7 @@ func (h *PostLogoutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		MaxAge:  -1,
 		Expires: time.Now().Add(-100 * time.Hour),
 		Path:    "/",
+		Secure:  true,
 	})
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)

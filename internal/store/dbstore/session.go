@@ -3,6 +3,7 @@ package dbstore
 import (
 	"fmt"
 	"goth/internal/store"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -43,6 +44,10 @@ func (s *SessionStore) GetUserFromSession(sessionID string, userID string) (*sto
 
 	if err != nil {
 		return nil, err
+	}
+
+	if session.ExpiresAt.Before(time.Now()) {
+		return nil, fmt.Errorf("session expired")
 	}
 
 	if session.User.ID == 0 {

@@ -65,9 +65,10 @@ templ nav() {
 				<div class="hidden md:flex items-center space-x-6">
 					<a href="/products" class="text-gray-300 hover:text-white transition-colors">Продукти</a>
 					<a href="/about" class="text-gray-300 hover:text-white transition-colors">За нас</a>
-					if middleware.GetUser(ctx) != nil {
-						<a href="/cart" class="text-gray-300 hover:text-white transition-colors">🛒 Количка</a>
-						<button
+				if middleware.GetUser(ctx) != nil {
+					<a href="/cart" class="text-gray-300 hover:text-white transition-colors">🛒 Количка</a>
+					<a href="/computers" class="text-gray-300 hover:text-white transition-colors">💻 Компютри</a>
+					<button
 							class="bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium"
 							hx-target="body"
 							hx-swap="innerHTML"
@@ -97,11 +98,14 @@ templ nav() {
 							<a href="/about" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
 								ℹ️ За нас
 							</a>
-							if middleware.GetUser(ctx) != nil {
-								<a href="/cart" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
-									🛒 Количка
-								</a>
-								<button
+						if middleware.GetUser(ctx) != nil {
+							<a href="/cart" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+								🛒 Количка
+							</a>
+							<a href="/computers" class="block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200">
+								💻 Компютри
+							</a>
+							<button
 									class="w-full text-left text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200"
 									hx-target="body"
 									hx-swap="innerHTML"

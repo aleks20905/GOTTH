@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 
+	"goth/internal/auth"
 	hashmock "goth/internal/hash/mock"
 	"goth/internal/store"
 	storemock "goth/internal/store/mock"
@@ -12,8 +13,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"gorm.io/gorm"
 )
+
+const testSessionSecret = "test-secret"
 
 func TestLogin(t *testing.T) {
 
@@ -40,8 +44,9 @@ func TestLogin(t *testing.T) {
 			expectedStatusCode:           http.StatusOK,
 			expectedCookie: &http.Cookie{
 				Name:     "session",
-				Value:    base64.StdEncoding.EncodeToString([]byte("sessionId:1")),
+				Value:    auth.Sign(testSessionSecret, base64.StdEncoding.EncodeToString([]byte("sessionId:1"))),
 				HttpOnly: true,
+				Secure:   true,
 			},
 		},
 		{
@@ -76,7 +81,9 @@ func TestLogin(t *testing.T) {
 			}
 
 			if tc.getUserResult != nil && tc.comparePasswordAndHashResult {
-				sessionStore.On("CreateSession", &store.Session{UserID: tc.getUserResult.ID}).Return(tc.createSessionResult, nil)
+				sessionStore.On("CreateSession", mock.MatchedBy(func(s *store.Session) bool {
+					return s.UserID == tc.getUserResult.ID && !s.ExpiresAt.IsZero()
+				})).Return(tc.createSessionResult, nil)
 			}
 
 			handler := NewPostLoginHandler(PostLoginHandlerParams{
@@ -84,6 +91,7 @@ func TestLogin(t *testing.T) {
 				SessionStore:      sessionStore,
 				PasswordHash:      passwordHash,
 				SessionCookieName: "session",
+				SessionSecret:     testSessionSecret,
 			})
 			body := bytes.NewBufferString("email=" + tc.email + "&password=" + tc.password)
 			req, _ := http.NewRequest("POST", "/", body)
@@ -102,6 +110,7 @@ func TestLogin(t *testing.T) {
 				assert.Equal(tc.expectedCookie.Name, sessionCookie.Name, "handler returned wrong cookie name: got %v want %v", sessionCookie.Name, tc.expectedCookie.Name)
 				assert.Equal(tc.expectedCookie.Value, sessionCookie.Value, "handler returned wrong cookie value: got %v want %v", sessionCookie.Value, tc.expectedCookie.Value)
 				assert.Equal(tc.expectedCookie.HttpOnly, sessionCookie.HttpOnly, "handler returned wrong cookie HttpOnly: got %v want %v", sessionCookie.HttpOnly, tc.expectedCookie.HttpOnly)
+				assert.Equal(tc.expectedCookie.Secure, sessionCookie.Secure, "handler returned wrong cookie Secure: got %v want %v", sessionCookie.Secure, tc.expectedCookie.Secure)
 			} else {
 				assert.Empty(cookies, "handler returned unexpected cookie: got %v want %v", cookies, tc.expectedCookie)
 			}

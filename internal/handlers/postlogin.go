@@ -3,6 +3,7 @@ package handlers
 import (
 	b64 "encoding/base64"
 	"fmt"
+	"goth/internal/auth"
 	"goth/internal/hash"
 	"goth/internal/store"
 	"goth/internal/templates"
@@ -10,11 +11,14 @@ import (
 	"time"
 )
 
+const sessionTTL = 30 * 24 * time.Hour
+
 type PostLoginHandler struct {
 	userStore         store.UserStore
 	sessionStore      store.SessionStore
 	passwordhash      hash.PasswordHash
 	sessionCookieName string
+	sessionSecret     string
 }
 
 type PostLoginHandlerParams struct {
@@ -22,6 +26,7 @@ type PostLoginHandlerParams struct {
 	SessionStore      store.SessionStore
 	PasswordHash      hash.PasswordHash
 	SessionCookieName string
+	SessionSecret     string
 }
 
 func NewPostLoginHandler(params PostLoginHandlerParams) *PostLoginHandler {
@@ -30,6 +35,7 @@ func NewPostLoginHandler(params PostLoginHandlerParams) *PostLoginHandler {
 		sessionStore:      params.SessionStore,
 		passwordhash:      params.PasswordHash,
 		sessionCookieName: params.SessionCookieName,
+		sessionSecret:     params.SessionSecret,
 	}
 }
 
@@ -57,7 +63,8 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	session, err := h.sessionStore.CreateSession(&store.Session{
-		UserID: user.ID,
+		UserID:    user.ID,
+		ExpiresAt: time.Now().Add(sessionTTL),
 	})
 
 	if err != nil {
@@ -70,13 +77,13 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	cookieValue := b64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%d", sessionID, userID)))
 
-	expiration := time.Now().Add(365 * 24 * time.Hour)
 	cookie := http.Cookie{
 		Name:     h.sessionCookieName,
-		Value:    cookieValue,
-		Expires:  expiration,
+		Value:    auth.Sign(h.sessionSecret, cookieValue),
+		Expires:  time.Now().Add(sessionTTL),
 		Path:     "/",
 		HttpOnly: true,
+		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
 	}
 	http.SetCookie(w, &cookie)
