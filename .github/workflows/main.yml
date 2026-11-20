@@ -5,43 +5,24 @@ on: ["push", "pull_request"]
 jobs:
   lint:
     name: "Lint"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["windows-latest", "ubuntu-latest", "macOS-latest"]
-        go: ["1.22.x"]
-        dir: ["./"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          fetch-depth: 1
-      - uses: WillAbides/setup-go-faster@v1.14.0
-        with:
-          go-version: ${{ matrix.go }}
-      - run: "make vet"
-      - uses: dominikh/staticcheck-action@v1.3.1
+          go-version-file: go.mod
+      - run: make vet
+      - uses: dominikh/staticcheck-action@v1.4.0
         with:
           version: "latest"
           install-go: false
-          cache-key: ${{ matrix.go }}
-          working-directory: ${{ matrix.dir }}
 
   test:
     name: "Test"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["windows-latest", "ubuntu-latest", "macOS-latest"]
-        go: ["1.22.x"]
-        dir: ["./"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          fetch-depth: 1
-      - uses: WillAbides/setup-go-faster@v1.14.0
-        with:
-          go-version: ${{ matrix.go }}
-      - run: "make test"
-  
+          go-version-file: go.mod
+      - run: make test

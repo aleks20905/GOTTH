@@ -2,14 +2,16 @@ package handlers
 
 import (
 	"bytes"
+	"context"
 
+	"goth/internal/middleware"
+	"goth/internal/store/dbstore"
 	storemock "goth/internal/store/mock"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
 )
 
 func TestRegisterUserHandler(t *testing.T) {
@@ -27,15 +29,15 @@ func TestRegisterUserHandler(t *testing.T) {
 			email:              "test@example.com",
 			password:           "password",
 			expectedStatusCode: http.StatusOK,
-			expectedBody:       []byte(`<h1>Registration successful</h1><p>Go to <a href="login">login</a></p>`),
+			expectedBody:       []byte("Account Created!"),
 		},
 		{
 			name:               "fail - error creating user",
 			email:              "test@example.com",
 			password:           "password",
-			createUserError:    gorm.ErrDuplicatedKey,
-			expectedStatusCode: http.StatusBadRequest,
-			expectedBody:       []byte(`<h1>Registration failed</h1>`),
+			createUserError:    dbstore.ErrUserExists,
+			expectedStatusCode: http.StatusOK,
+			expectedBody:       []byte("An account with this email already exists"),
 		},
 	}
 
@@ -52,6 +54,14 @@ func TestRegisterUserHandler(t *testing.T) {
 			body := bytes.NewBufferString("email=" + tc.email + "&password=" + tc.password)
 			req, _ := http.NewRequest("POST", "/", body)
 			req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+			nonces := middleware.Nonces{
+				Htmx:            "nonce-1234",
+				ResponseTargets: "nonce-5678",
+				Tw:              "nonce-9101",
+				HtmxCSSHash:     "sha256-pgn1TCGZX6O77zDvy0oTODMOxemn0oj0LeCnQTRj7Kg=",
+			}
+			req = req.WithContext(context.WithValue(req.Context(), middleware.NonceKey, nonces))
 			rr := httptest.NewRecorder()
 
 			handler.ServeHTTP(rr, req)
