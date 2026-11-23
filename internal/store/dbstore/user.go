@@ -31,21 +31,17 @@ func NewUserStore(params NewUserStoreParams) *UserStore {
 }
 
 func (s *UserStore) CreateUser(email string, password string) error {
-	// Check if email already exists
 	var existing store.User
 	err := s.db.Where("email = ?", email).First(&existing).Error
 
 	if err == nil {
-		// Found a user - email is taken
 		return ErrUserExists
 	}
 
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
-		// Some other database error
 		return err
 	}
 
-	// Email is available - create user
 	hashedPassword, err := s.passwordhash.GenerateFromPassword(password)
 	if err != nil {
 		return err
@@ -70,4 +66,33 @@ func (s *UserStore) GetUser(email string) (*store.User, error) {
 	}
 
 	return &user, nil
+}
+
+func (s *UserStore) ListUsers() ([]store.User, error) {
+	var users []store.User
+	err := s.db.Order("id").Find(&users).Error
+	return users, err
+}
+
+func (s *UserStore) UpdateEmail(id uint, email string) error {
+	var existing store.User
+	err := s.db.Where("email = ?", email).First(&existing).Error
+
+	if err == nil {
+		return ErrUserExists
+	}
+
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+
+	return s.db.Model(&store.User{}).Where("id = ?", id).Update("email", email).Error
+}
+
+func (s *UserStore) UpdatePassword(id uint, hash string) error {
+	return s.db.Model(&store.User{}).Where("id = ?", id).Update("password", hash).Error
+}
+
+func (s *UserStore) SetAdmin(id uint, admin bool) error {
+	return s.db.Model(&store.User{}).Where("id = ?", id).Update("is_admin", admin).Error
 }

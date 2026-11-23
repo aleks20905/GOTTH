@@ -78,14 +78,14 @@ func header(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if os.Getenv("env") == "production" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"stylesheet\" href=\"/static/css/style.min.css\" nonce=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"stylesheet\" href=\"/static/css/style.min.css?v=2\" nonce=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(middleware.GetTwNonce(ctx))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/layout.templ`, Line: 16, Col: 93}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/layout.templ`, Line: 16, Col: 97}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
@@ -96,14 +96,14 @@ func header(title string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<link rel=\"stylesheet\" href=\"/static/css/style.css\" nonce=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<link rel=\"stylesheet\" href=\"/static/css/style.css?v=2\" nonce=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(middleware.GetTwNonce(ctx))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/layout.templ`, Line: 18, Col: 89}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/layout.templ`, Line: 18, Col: 93}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
@@ -143,7 +143,7 @@ func footer() templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<footer class=\"bg-navbarBackground border-t border-gray-800\"><div class=\"container mx-auto px-4 py-8\"><div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><!-- Brand --><div><h3 class=\"text-lg font-bold text-white mb-4\">🥩 МесоМаркет</h3><p class=\"text-gray-400 text-sm\">Вашият магазин за качествено месо.</p></div><!-- Links --><div><h4 class=\"font-semibold text-white mb-4\">Бързи връзки</h4><ul class=\"space-y-2 text-sm\"><li><a href=\"/\" class=\"text-gray-400 hover:text-secondary transition-colors\">Начало</a></li><li><a href=\"/products\" class=\"text-gray-400 hover:text-secondary transition-colors\">Продукти</a></li><li><a href=\"/about\" class=\"text-gray-400 hover:text-secondary transition-colors\">За нас</a></li></ul></div><!-- Contact --><div><h4 class=\"font-semibold text-white mb-4\">Контакт</h4><p class=\"text-sm text-gray-400\">hello@mesomarket.bg</p></div></div><div class=\"border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500\">© 2024 МесоМаркет. Всички права запазени.</div></div></footer>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<footer class=\"bg-navbarBackground border-t border-gray-800\"><div class=\"container mx-auto px-4 py-8\"><div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><!-- Brand --><div><h3 class=\"text-lg font-bold text-white mb-4 flex items-center gap-2\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8m-4-4v4\"></path></svg> RemoteDesk</h3><p class=\"text-gray-400 text-sm\">Remote access for office computers.</p></div><!-- Links --><div><h4 class=\"font-semibold text-white mb-4\">Quick links</h4><ul class=\"space-y-2 text-sm\"><li><a href=\"/\" class=\"text-gray-400 hover:text-secondary transition-colors\">Home</a></li><li><a href=\"/computers\" class=\"text-gray-400 hover:text-secondary transition-colors\">Computers</a></li></ul></div><!-- Contact --><div><h4 class=\"font-semibold text-white mb-4\">Contact</h4><p class=\"text-sm text-gray-400\">Contact your administrator for access.</p></div></div><div class=\"border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500\">© 2026 RemoteDesk. All rights reserved.</div></div></footer>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -172,37 +172,57 @@ func nav() templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<nav class=\"bg-navbarBackground border-b border-gray-800 sticky top-0 z-50\"><div class=\"container mx-auto px-4\"><div class=\"flex justify-between items-center h-16\"><!-- Logo --><a href=\"/\" class=\"text-xl font-bold text-white hover:text-secondary transition-colors\">🥩 МесоМаркет</a><!-- Desktop links --><div class=\"hidden md:flex items-center space-x-6\"><a href=\"/products\" class=\"text-gray-300 hover:text-white transition-colors\">Продукти</a> <a href=\"/about\" class=\"text-gray-300 hover:text-white transition-colors\">За нас</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<nav class=\"bg-navbarBackground border-b border-gray-800 sticky top-0 z-50\"><div class=\"container mx-auto px-4\"><div class=\"flex justify-between items-center h-16\"><!-- Logo --><a href=\"/\" class=\"flex items-center gap-2 text-xl font-bold text-white hover:text-secondary transition-colors\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8m-4-4v4\"></path></svg> RemoteDesk</a><!-- Desktop links --><div class=\"hidden md:flex items-center space-x-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if middleware.GetUser(ctx) != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<a href=\"/cart\" class=\"text-gray-300 hover:text-white transition-colors\">🛒 Количка</a> <a href=\"/computers\" class=\"text-gray-300 hover:text-white transition-colors\">💻 Компютри</a> <button class=\"bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Изход</button>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<a href=\"/computers\" class=\"flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8m-4-4v4\"></path></svg> Computers</a> <a href=\"/logs\" class=\"flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"></path> <path d=\"M14 2v6h6\"></path></svg> Logs</a> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if middleware.IsAdmin(ctx) {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<a href=\"/admin\" class=\"flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg> Admin</a> <a href=\"/admin/groups\" class=\"flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"8\" rx=\"2\"></rect> <rect x=\"2\" y=\"14\" width=\"20\" height=\"8\" rx=\"2\"></rect> <path d=\"M6 6h.01M6 18h.01\"></path></svg> Groups</a> <a href=\"/admin/updates\" class=\"flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path> <path d=\"M3.3 7 12 12l8.7-5M12 22V12\"></path></svg> Updates</a>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, " <button class=\"bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Sign out</button>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<a href=\"/login\" class=\"text-gray-300 hover:text-white transition-colors\">Вход</a> <a href=\"/register\" class=\"bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium\">Регистрация</a>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<a href=\"/login\" class=\"text-gray-300 hover:text-white transition-colors\">Sign in</a> <a href=\"/register\" class=\"bg-secondary text-background px-4 py-2 rounded-lg hover:bg-amber-300 transition-all duration-200 font-medium\">Sign up</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><!-- Mobile menu --><div class=\"md:hidden\"><details><summary class=\"text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 list-none cursor-pointer\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg></summary><div class=\"absolute left-0 right-0 bg-navbarBackground border-t border-gray-800 py-4 space-y-2 px-4\"><a href=\"/products\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">🥩 Продукти</a> <a href=\"/about\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">ℹ️ За нас</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><!-- Mobile menu --><div class=\"md:hidden\"><details><summary class=\"text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 list-none cursor-pointer\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg></summary><div class=\"absolute left-0 right-0 bg-navbarBackground border-t border-gray-800 py-4 space-y-2 px-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if middleware.GetUser(ctx) != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<a href=\"/cart\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">🛒 Количка</a> <a href=\"/computers\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">💻 Компютри</a> <button class=\"w-full text-left text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">🔑 Изход</button>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<a href=\"/computers\" class=\"flex items-center gap-2 text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"></rect> <path d=\"M8 21h8m-4-4v4\"></path></svg> Computers</a> <a href=\"/logs\" class=\"flex items-center gap-2 text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"></path> <path d=\"M14 2v6h6\"></path></svg> Logs</a> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if middleware.IsAdmin(ctx) {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<a href=\"/admin\" class=\"flex items-center gap-2 text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg> Admin</a> <a href=\"/admin/groups\" class=\"flex items-center gap-2 text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"8\" rx=\"2\"></rect> <rect x=\"2\" y=\"14\" width=\"20\" height=\"8\" rx=\"2\"></rect> <path d=\"M6 6h.01M6 18h.01\"></path></svg> Groups</a> <a href=\"/admin/updates\" class=\"flex items-center gap-2 text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\"><path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path> <path d=\"M3.3 7 12 12l8.7-5M12 22V12\"></path></svg> Updates</a>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " <button class=\"w-full text-left text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Sign out</button>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<a href=\"/login\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">🔑 Вход</a> <a href=\"/register\" class=\"block text-secondary hover:text-amber-300 hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200 font-medium\">✨ Регистрация</a>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<a href=\"/login\" class=\"block text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200\">Sign in</a> <a href=\"/register\" class=\"block text-secondary hover:text-amber-300 hover:bg-gray-800 px-4 py-2 rounded-lg transition-all duration-200 font-medium\">Sign up</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></details></div></div></div></nav>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></details></div></div></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -231,7 +251,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!doctype html><html lang=\"bg\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<!doctype html><html lang=\"en\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -239,7 +259,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<body class=\"bg-background text-text flex flex-col min-h-screen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<body class=\"bg-background text-text flex flex-col min-h-screen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -247,7 +267,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<main class=\"flex-1 container mx-auto px-4 py-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<main class=\"flex-1 container mx-auto px-4 py-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -255,7 +275,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</main>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -263,7 +283,7 @@ func Layout(contents templ.Component, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

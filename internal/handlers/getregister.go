@@ -12,7 +12,7 @@ func NewGetRegisterHandler() *GetRegisterHandler {
 }
 
 func (h *GetRegisterHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := templates.RegisterForm("", "") // Empty error, empty email
+	c := templates.RegisterForm("", "")
 	err := templates.Layout(c, "Register").Render(r.Context(), w)
 
 	if err != nil {

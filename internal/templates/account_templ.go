@@ -8,9 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import ()
-
-func AccountPage() templ.Component {
+func Account(email string, msg string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -31,7 +29,73 @@ func AccountPage() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-gray-900\"><!-- Header --><div class=\"bg-gray-800 shadow-lg\"><div class=\"max-w-6xl mx-auto px-4 py-6\"><div class=\"flex items-center justify-between\"><a href=\"/products\" class=\"text-xl font-bold text-white hover:text-blue-400 transition\">← Back to Shop</a><h1 class=\"text-3xl font-bold text-white\">👤 Account</h1><div class=\"w-32\"></div></div></div></div><div class=\"flex items-center justify-between\"><h1 class=\"text-3xl font-bold text-white\">In dev</h1></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-2xl mx-auto\"><div class=\"bg-gradient-to-r from-gray-800 to-gray-900 shadow-xl rounded-2xl\"><div class=\"px-6 py-8\"><a href=\"/\" class=\"text-gray-400 hover:text-secondary transition-colors text-sm\">← Home</a><h1 class=\"text-3xl font-bold text-white mt-2 mb-2\">Account</h1><p class=\"text-gray-400\">Signed in as <span class=\"text-secondary\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(email)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/account.templ`, Line: 9, Col: 78}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></p></div></div><div class=\"py-8 space-y-8\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if msg == "email-updated" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded\">Email updated.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if msg == "email-taken" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded\">This email is already taken.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if msg == "email-invalid" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded\">Enter a valid email address.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if msg == "password-updated" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded\">Password updated.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if msg == "password-wrong" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded\">Current password is wrong.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if msg == "password-short" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded\">New password must be at least 8 characters.</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<!-- Change email --><div class=\"bg-gray-800 border border-gray-700 rounded-2xl p-6\"><h2 class=\"text-xl font-semibold text-white mb-4\">Change email</h2><form method=\"POST\" action=\"/account/email\" class=\"flex flex-col md:flex-row gap-4\"><input type=\"email\" name=\"email\" placeholder=\"New email address\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(email)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/account.templ`, Line: 51, Col: 19}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" required=\"\" class=\"flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition\"> <button type=\"submit\" class=\"px-6 py-3 bg-secondary hover:bg-amber-300 text-gray-900 font-semibold rounded-lg transition-all duration-200\">Save</button></form></div><!-- Change password --><div class=\"bg-gray-800 border border-gray-700 rounded-2xl p-6\"><h2 class=\"text-xl font-semibold text-white mb-4\">Change password</h2><form method=\"POST\" action=\"/account/password\" class=\"flex flex-col gap-4\"><input type=\"password\" name=\"current_password\" placeholder=\"Current password\" required=\"\" autocomplete=\"current-password\" class=\"px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition\"> <input type=\"password\" name=\"new_password\" placeholder=\"New password (min. 8 characters)\" required=\"\" minlength=\"8\" autocomplete=\"new-password\" class=\"px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition\"> <button type=\"submit\" class=\"px-6 py-3 bg-secondary hover:bg-amber-300 text-gray-900 font-semibold rounded-lg transition-all duration-200 md:self-start\">Update password</button></form></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

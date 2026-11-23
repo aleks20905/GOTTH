@@ -39,7 +39,7 @@ func (s *SessionStore) GetUserFromSession(sessionID string, userID string) (*sto
 	var session store.Session
 
 	err := s.db.Preload("User", func(db *gorm.DB) *gorm.DB {
-		return db.Select("ID", "Email")
+		return db.Select("ID", "Email", "Password", "IsAdmin")
 	}).Where("session_id = ? AND user_id = ?", sessionID, userID).First(&session).Error
 
 	if err != nil {

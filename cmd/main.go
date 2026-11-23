@@ -10,9 +10,11 @@ import (
 	"syscall"
 	"time"
 
+	"goth/internal/agent"
 	"goth/internal/config"
 	"goth/internal/hash/passwordhash"
 	"goth/internal/router"
+	"goth/internal/scheduler"
 	database "goth/internal/store/db"
 	"goth/internal/store/dbstore"
 )
@@ -32,9 +34,7 @@ func init() {
 		Environment = env
 		os.Setenv("ENV", Environment)
 	}
-	// log.Printf("Running in %s environment", Environment)
 }
-
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
@@ -47,19 +47,26 @@ func main() {
 
 	sessionStore := dbstore.NewSessionStore(dbstore.NewSessionStoreParams{DB: db})
 
-	productStore := dbstore.NewProductStore(dbstore.NewProductStoreParams{DB: db})
-	cartStore := dbstore.NewCartStore(dbstore.NewCartStoreParams{DB: db})
+	deviceStore := dbstore.NewDeviceStore(dbstore.NewDeviceStoreParams{DB: db})
+	groupStore := dbstore.NewGroupStore(dbstore.NewGroupStoreParams{DB: db})
+	firewallStore := dbstore.NewFirewallStore(dbstore.NewFirewallStoreParams{DB: db})
+	taskStore := dbstore.NewTaskStore(dbstore.NewTaskStoreParams{DB: db})
+	logStore := dbstore.NewLogStore(dbstore.NewLogStoreParams{DB: db})
 
-	// router dependencies
 	deps := router.RouterDependencies{
 		Config:         *cfg,
 		UserStore:      userStore,
 		SessionStore:   sessionStore,
 		PasswordHasher: passwordHasher,
-		ProductStore:   productStore,
-		CartStore:      cartStore,
+		DeviceStore:    deviceStore,
+		GroupStore:     groupStore,
+		FirewallStore:  firewallStore,
+		TaskStore:      taskStore,
+		LogStore:       logStore,
 	}
 	r := router.SetupRouter(deps)
+
+	go runScheduler(deviceStore, taskStore, logStore, cfg.AgentToken)
 
 	killSig := make(chan os.Signal, 1)
 	signal.Notify(killSig, os.Interrupt, syscall.SIGTERM)
@@ -87,15 +94,23 @@ func main() {
 
 	logger.Info("scheduleStore")
 
-	// Create a context with a timeout for shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Attempt to gracefully shut down the server
 	if err := srv.Shutdown(ctx); err != nil {
 		logger.Error("Server shutdown failed", slog.Any("err", err))
 		os.Exit(1)
 	}
 
 	logger.Info("Server shutdown complete")
+}
+
+// runScheduler dispatches due update tasks and fails stale running ones.
+func runScheduler(deviceStore *dbstore.DeviceStore, taskStore *dbstore.TaskStore, logStore *dbstore.LogStore, agentToken string) {
+	client := agent.NewClient(agentToken)
+	ticker := time.NewTicker(15 * time.Second)
+	defer ticker.Stop()
+	for range ticker.C {
+		scheduler.Tick(deviceStore, taskStore, logStore, client, time.Now())
+	}
 }

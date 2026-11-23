@@ -73,8 +73,6 @@ func TextHTMLMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// get the Nonce from the context, it is a struct called Nonces,
-// so we can get the nonce we need by the key, i.e. HtmxNonce
 func GetNonces(ctx context.Context) Nonces {
 	nonceSet := ctx.Value(NonceKey)
 	if nonceSet == nil {
@@ -110,19 +108,22 @@ type AuthMiddleware struct {
 	sessionStore      store.SessionStore
 	sessionCookieName string
 	sessionSecret     string
+	adminEmail        string
 }
 
-func NewAuthMiddleware(sessionStore store.SessionStore, sessionCookieName string, sessionSecret string) *AuthMiddleware {
+func NewAuthMiddleware(sessionStore store.SessionStore, sessionCookieName string, sessionSecret string, adminEmail string) *AuthMiddleware {
 	return &AuthMiddleware{
 		sessionStore:      sessionStore,
 		sessionCookieName: sessionCookieName,
 		sessionSecret:     sessionSecret,
+		adminEmail:        adminEmail,
 	}
 }
 
 type UserContextKey string
 
 var UserKey UserContextKey = "user"
+var AdminKey UserContextKey = "admin"
 
 func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -167,6 +168,7 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(r.Context(), UserKey, user)
+		ctx = context.WithValue(ctx, AdminKey, user.IsAdmin || (m.adminEmail != "" && user.Email == m.adminEmail))
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
@@ -179,4 +181,9 @@ func GetUser(ctx context.Context) *store.User {
 	}
 
 	return user.(*store.User)
+}
+
+func IsAdmin(ctx context.Context) bool {
+	isAdmin, _ := ctx.Value(AdminKey).(bool)
+	return isAdmin
 }

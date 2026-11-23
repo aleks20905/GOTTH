@@ -1,0 +1,57 @@
+package templates
+
+import "goth/internal/store"
+
+templ Logs(entries []store.LogEntry) {
+	<div class="min-h-screen bg-gray-900">
+		<div class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-xl">
+			<div class="max-w-7xl mx-auto px-4 py-8">
+				<h1 class="text-4xl font-bold text-white mb-2">Logs</h1>
+				<p class="text-gray-400">Last 200 system events</p>
+			</div>
+		</div>
+		<div class="max-w-7xl mx-auto px-4 py-8">
+			if len(entries) == 0 {
+				<p class="text-gray-400">No entries yet.</p>
+			} else {
+				<div class="bg-gray-800 rounded-2xl shadow-lg overflow-x-auto">
+					<table class="w-full text-left min-w-[680px]">
+						<thead class="bg-gray-700/50">
+							<tr>
+								<th class="px-6 py-4 text-gray-300 text-sm font-semibold">Time</th>
+								<th class="px-6 py-4 text-gray-300 text-sm font-semibold">Level</th>
+								<th class="px-6 py-4 text-gray-300 text-sm font-semibold">Category</th>
+								<th class="px-6 py-4 text-gray-300 text-sm font-semibold">Message</th>
+								<th class="px-6 py-4 text-gray-300 text-sm font-semibold">User</th>
+							</tr>
+						</thead>
+						<tbody>
+							for _, entry := range entries {
+								<tr class="border-t border-gray-700">
+									<td class="px-6 py-4 text-gray-300 whitespace-nowrap">{ entry.Timestamp.Format("02.01 15:04:05") }</td>
+									<td class="px-6 py-4">
+										if entry.Level == "error" {
+											<span class="text-red-400">error</span>
+										} else if entry.Level == "warn" {
+											<span class="text-amber-400">warning</span>
+										} else {
+											<span class="text-gray-300">info</span>
+										}
+									</td>
+									<td class="px-6 py-4 text-gray-300">{ entry.Category }</td>
+									<td class="px-6 py-4 text-white">
+										{ entry.Message }
+										if entry.Details != "" {
+											<span class="block text-xs text-gray-500 mt-1">{ entry.Details }</span>
+										}
+									</td>
+									<td class="px-6 py-4 text-gray-300">{ entry.UserEmail }</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+		</div>
+	</div>
+}

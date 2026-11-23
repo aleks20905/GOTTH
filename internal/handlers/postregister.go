@@ -26,7 +26,6 @@ func (h *PostRegisterHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	// Basic validation
 	if email == "" || password == "" {
 		c := templates.RegisterForm("Email and password are required", email)
 		templates.Layout(c, "Register").Render(r.Context(), w)
@@ -53,7 +52,6 @@ func (h *PostRegisterHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Success - show success page
 	c := templates.RegisterSuccess()
 	templates.Layout(c, "Success").Render(r.Context(), w)
 }

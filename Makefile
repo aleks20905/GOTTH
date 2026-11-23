@@ -16,12 +16,17 @@ templ-watch:
 	
 .PHONY: dev
 dev:
-	go build -o ./tmp/$(APP_NAME) ./cmd/$(APP_NAME)/main.go && air
+	go build -o ./bin/app ./cmd && go build -o ./bin/agent ./cmd/agent
+	PORT=:4101 AGENT_NAME=lab-pc-1 AGENT_TOKEN=dev-token AGENT_SERVER=http://localhost:4000 AGENT_URL=http://localhost:4101 ./bin/agent & AGENT1=$$!; \
+	PORT=:4102 AGENT_NAME=lab-pc-2 AGENT_VERSION=2.4.1 AGENT_TOKEN=dev-token AGENT_SERVER=http://localhost:4000 AGENT_URL=http://localhost:4102 ./bin/agent & AGENT2=$$!; \
+	trap "kill $$AGENT1 $$AGENT2 2>/dev/null" EXIT INT TERM; \
+	ADMIN_EMAIL=admin@localhost AGENT_TOKEN=dev-token SESSION_SECRET=dev-secret ./bin/app
 
 .PHONY: build
 build:
 	make templ-generate
-	go build -ldflags "-X main.Environment=production" -o ./bin/$(APP_NAME) ./cmd/$(APP_NAME)/main.go
+	go build -o ./bin/app ./cmd
+	go build -o ./bin/agent ./cmd/agent
 
 .PHONY: vet
 vet:

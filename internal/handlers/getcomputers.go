@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"goth/internal/agent"
 	"goth/internal/middleware"
+	"goth/internal/store"
 	"goth/internal/templates"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 type StatusGetter interface {
@@ -13,18 +16,21 @@ type StatusGetter interface {
 }
 
 type ComputersHandlerParams struct {
-	Agents       []string
+	DeviceStore  store.DeviceStore
+	GroupStore   store.GroupStore
 	StatusGetter StatusGetter
 }
 
 type ComputersHandler struct {
-	agents       []string
+	deviceStore  store.DeviceStore
+	groupStore   store.GroupStore
 	statusGetter StatusGetter
 }
 
 func NewComputersHandler(params ComputersHandlerParams) *ComputersHandler {
 	return &ComputersHandler{
-		agents:       params.Agents,
+		deviceStore:  params.DeviceStore,
+		groupStore:   params.GroupStore,
 		statusGetter: params.StatusGetter,
 	}
 }
@@ -35,23 +41,82 @@ func (h *ComputersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows := make([]templates.ComputerRow, 0, len(h.agents))
-	for _, url := range h.agents {
-		row := templates.ComputerRow{URL: url, Name: "—", Version: "—", OS: "—", Uptime: "—"}
-		if status, err := h.statusGetter.GetStatus(url); err == nil {
-			row.Name = status.Name
+	devices, err := h.deviceStore.ListDevices()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	groups, err := h.groupStore.ListGroups()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var groupFilter *uint
+	if raw := r.URL.Query().Get("group"); raw != "" {
+		if id, err := strconv.ParseUint(raw, 10, 32); err == nil {
+			gid := uint(id)
+			groupFilter = &gid
+		}
+	}
+
+	filtered := devices[:0]
+	for _, device := range devices {
+		if groupFilter == nil || (device.GroupID != nil && *device.GroupID == *groupFilter) {
+			filtered = append(filtered, device)
+		}
+	}
+
+	c := templates.Computers(buildComputerRows(h.statusGetter, filtered), groups, groupFilter)
+	err = templates.Layout(c, "Computers").Render(r.Context(), w)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+	}
+}
+
+func buildComputerRows(getter StatusGetter, devices []store.Device) []templates.ComputerRow {
+	rows := make([]templates.ComputerRow, 0, len(devices))
+	for _, device := range devices {
+		row := templates.ComputerRow{ID: device.ID, URL: device.URL, Name: device.Name, Version: orDash(device.Version), OS: orDash(device.OS), Uptime: "—", LastSeen: humanizeLastSeen(device.LastSeen), Verified: device.Verified}
+		if status, err := getter.GetStatus(device.URL); err == nil {
+			if status.Name != "" {
+				row.Name = status.Name
+			}
 			row.Version = status.Version
 			row.OS = status.OS
 			row.Uptime = humanizeUptime(status.UptimeSeconds)
 			row.Online = true
+			row.Updating = status.Updating
 		}
 		rows = append(rows, row)
 	}
+	return rows
+}
 
-	c := templates.Computers(rows)
-	err := templates.Layout(c, "Компютри").Render(r.Context(), w)
-	if err != nil {
-		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+func orDash(value string) string {
+	if value == "" {
+		return "—"
+	}
+	return value
+}
+
+func humanizeLastSeen(lastSeen time.Time) string {
+	if lastSeen.IsZero() {
+		return "—"
+	}
+	ago := time.Since(lastSeen)
+	switch {
+	case ago < time.Minute:
+		return "just now"
+	case ago < time.Hour:
+		return fmt.Sprintf("%d min ago", int(ago.Minutes()))
+	case ago < 24*time.Hour:
+		return fmt.Sprintf("%d h ago", int(ago.Hours()))
+	case ago < 7*24*time.Hour:
+		return fmt.Sprintf("%d days ago", int(ago.Hours()/24))
+	default:
+		return lastSeen.Format("02.01.2006")
 	}
 }
 
@@ -61,12 +126,12 @@ func humanizeUptime(seconds int64) string {
 	minutes := (seconds % 3600) / 60
 	switch {
 	case days > 0:
-		return fmt.Sprintf("%d д %d ч", days, hours)
+		return fmt.Sprintf("%d d %d h", days, hours)
 	case hours > 0:
-		return fmt.Sprintf("%d ч %d мин", hours, minutes)
+		return fmt.Sprintf("%d h %d min", hours, minutes)
 	case minutes > 0:
-		return fmt.Sprintf("%d мин", minutes)
+		return fmt.Sprintf("%d min", minutes)
 	default:
-		return fmt.Sprintf("%d сек", seconds)
+		return fmt.Sprintf("%d sec", seconds)
 	}
 }

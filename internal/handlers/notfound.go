@@ -12,6 +12,7 @@ func NewNotFoundHandler() *NotFoundHandler {
 }
 
 func (h *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
 	c := templates.NotFound()
 	err := templates.Layout(c, "Not Found").Render(r.Context(), w)
 
